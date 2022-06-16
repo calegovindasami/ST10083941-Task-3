@@ -13,6 +13,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using LiveCharts;
+using LiveCharts.Wpf;
 using System.Windows.Shapes;
 
 namespace ST10083941_PROG6221_Task_3
@@ -25,10 +27,52 @@ namespace ST10083941_PROG6221_Task_3
         //CREATE FUNCTIONS TO ADD DIALOG OPEN/CLOSE
         //CREATE FUNCTIONS TO CLEAR AND RESET DIALOG CONTENT
         //RENAME ALL COMPONENTS CORRECTLY
+        
 
+        public class Expense
+        {
+
+            public Expense(string name, double cost)
+            {
+                Name = name;
+                Cost = cost;
+            }
+
+            public string Name { get; set; }
+            public double Cost { get; set; }
+
+        }
+
+        public class PhoneBill : Expense
+        {
+            public PhoneBill(string name, double cost) : base(name, cost)
+            {
+
+            }
+        }
+
+        List<Expense> expenses;
         public MainWindow()
         {
             InitializeComponent();
+             expenses = new List<Expense>()
+            {
+                new Expense("Groceries", 500.00),
+                new Expense("Utilities", 750.00),
+                new Expense("Vehicle", 1250.00),
+                new Expense("Home Loan", 3500.00),
+                new Expense("Home Loan", 3500.00),
+            };
+            lvExpenses.ItemsSource = expenses;
+
+            DataContext = this;
+
+            for (int i = 0; i < expenses.Count; i++)
+            {
+                pcExpenses.Series.Add(new PieSeries { Title = expenses[i].Name, StrokeThickness = 1, Values = new ChartValues<double> { expenses[i].Cost } });
+            }
+            btnHousing.IsEnabled = false;
+
         }
 
         private void btnHousing_Click(object sender, RoutedEventArgs e)
@@ -70,6 +114,9 @@ namespace ST10083941_PROG6221_Task_3
 
         private void btnRent_Click(object sender, RoutedEventArgs e)
         {
+            expenses.Add(new PhoneBill("Rent", (double)nudRent.Value));
+            lvExpenses.Items.Refresh();
+            pcExpenses.Series.Add(new PieSeries { Title = "Rent", StrokeThickness = 1, Values = new ChartValues<double> { (double)nudRent.Value} });
             ResetHousing();
         }
 

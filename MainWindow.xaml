@@ -7,6 +7,7 @@
         xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Medium"
@@ -16,6 +17,7 @@
         BorderThickness="1"
         mc:Ignorable="d"
         Language="en-ZA"
+        WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="720" Width="1280">
     <Window.Resources>
         <Style TargetType="metro:NumericUpDown">
@@ -58,14 +60,14 @@
 
                     <StackPanel x:Name="pnlRenting" Margin="20" Visibility="Collapsed">
                         <TextBlock HorizontalAlignment="Center" FontSize="24" Margin="5">Monthly Rent</TextBlock>
-                        <metro:NumericUpDown HideUpDownButtons="True" TextAlignment="Left" StringFormat="C2" Foreground="Red" ></metro:NumericUpDown>
+                        <metro:NumericUpDown Name="nudRent" HideUpDownButtons="True" TextAlignment="Left" StringFormat="C2" Foreground="Red" ></metro:NumericUpDown>
 
                         <StackPanel Orientation="Horizontal">
                             <Button Name="btnRent" Click="btnRent_Click" Style="{StaticResource MaterialDesignRaisedButton}" Width="125" FontSize="16" Margin="20">SUBMIT</Button>
                             <Button Name="btnExitRent" Click="btnExitRent_Click" Style="{StaticResource MaterialDesignRaisedButton}" Width="125" FontSize="16">CANCEL</Button>
                         </StackPanel>
                     </StackPanel>
-                    
+
                     <StackPanel Visibility="Collapsed" Margin="20" Name="pnlLoan">
                         <StackPanel.Resources>
                             <Style TargetType="TextBlock">
@@ -132,7 +134,7 @@
                     <metro:NumericUpDown Margin="10"></metro:NumericUpDown>
 
                     <Button x:Name="btnSubmitVehicle" Click="btnSubmitVehicle_Click" Width="150" materialDesign:ButtonAssist.CornerRadius="20">SUBMIT</Button>
-                    
+
                 </StackPanel>
             </materialDesign:DialogHost.DialogContent>
             <Border
@@ -185,7 +187,7 @@
             </Border>
         </materialDesign:DialogHost>
 
-        <materialDesign:DialogHost  HorizontalAlignment="Center" VerticalAlignment="Center" Name="dlogSaving" DialogTheme="Inherit">
+        <materialDesign:DialogHost  HorizontalAlignment="Center" VerticalAlignment="Center" Name="dlogSaving" DialogTheme="Inherit" Panel.ZIndex="1000">
             <materialDesign:DialogHost.DialogContent>
                 <StackPanel Width="300" Height="300" Margin="16">
                     <StackPanel.Resources>
@@ -207,7 +209,7 @@
                     <metro:NumericUpDown></metro:NumericUpDown>
 
                     <Button Width="150" materialDesign:ButtonAssist.CornerRadius="20" Name="btnSubmitSavings" Click="btnSubmitSavings_Click">SUBMIT</Button>
-                    
+
                 </StackPanel>
             </materialDesign:DialogHost.DialogContent>
             <Border
@@ -216,9 +218,71 @@
                 MinWidth="1280"
                 MinHeight="720"
                 VerticalAlignment="Bottom"
-                ClipToBounds="True">
-            </Border>
+                ClipToBounds="True"/>
         </materialDesign:DialogHost>
+
+        <ListView x:Name="lvExpenses"  Style="{StaticResource MaterialDesignListView}" Margin="10,290,868,10">
+            <ListView.Resources>
+                <Style TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                    <Setter Property="FontSize" Value="26"/>
+                </Style>
+            </ListView.Resources>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Expense" Width="180" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Amount" Width="180">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Cost}" Foreground="Red"></TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth5" materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" Padding="32" Margin="862,290,25,10">
+            <lvc:PieChart Hoverable="False" LegendLocation="Bottom"  x:Name="pcExpenses" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="329" Width="350" Margin="-14,0,-17,-6" StartingRotationAngle="0"/>
+        </materialDesign:Card>
+
+        <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth5"  materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" Margin="10,95,868,405">
+            <materialDesign:Card.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FFBA2BFF" Offset="1"/>
+                    <GradientStop Color="#FFF04747"/>
+                </LinearGradientBrush>
+            </materialDesign:Card.Background>
+            <StackPanel >
+                <TextBlock FontSize="24" Foreground="White" Margin="20" Width="334"><Run Text="Balance:"/></TextBlock>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="64" TextWrapping="Wrap" Foreground="White" Margin="10,0" RenderTransformOrigin="0.5,0.5" Height="96"><Run Text="R 12345"/></TextBlock>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth5" materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" Margin="433,95,445,405">
+            <materialDesign:Card.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FFD100FF"/>
+                    <GradientStop Color="#FFF04535" Offset="1"/>
+                </LinearGradientBrush>
+            </materialDesign:Card.Background>
+            <StackPanel>
+                <TextBlock FontSize="24" Foreground="White" Margin="20">Total Expenses</TextBlock>
+                <TextBlock FontSize="60" Foreground="White" HorizontalAlignment="Center">R 1523</TextBlock>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <materialDesign:Card Margin="862,95,25,405" materialDesign:ShadowAssist.ShadowDepth="Depth5" materialDesign:ShadowAssist.ShadowEdges="Top,Left" >
+            <materialDesign:Card.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FFE82C2C" Offset="0"/>
+                    <GradientStop Color="#FFC639FB" Offset="1"/>
+                </LinearGradientBrush>
+            </materialDesign:Card.Background>
+            <StackPanel>
+                <TextBlock Foreground="White" FontSize="24" Margin="20">Income: </TextBlock>
+                <TextBox Style="{StaticResource MaterialDesignTextBox}" Width="300" FontSize="24" VerticalContentAlignment="Center" Background="White" Height="40"></TextBox>
+            </StackPanel>
+        </materialDesign:Card>
 
     </Grid>
 </metro:MetroWindow>
