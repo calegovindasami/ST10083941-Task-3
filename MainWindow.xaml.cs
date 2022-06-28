@@ -55,23 +55,7 @@ namespace ST10083941_PROG6221_Task_3
         public MainWindow()
         {
             InitializeComponent();
-             expenses = new List<Expense>()
-            {
-                new Expense("Groceries", 500.00),
-                new Expense("Utilities", 750.00),
-                new Expense("Vehicle", 1250.00),
-                new Expense("Home Loan", 3500.00),
-                new Expense("Home Loan", 3500.00),
-            };
-            lvExpenses.ItemsSource = expenses;
 
-            DataContext = this;
-
-            for (int i = 0; i < expenses.Count; i++)
-            {
-                pcExpenses.Series.Add(new PieSeries { Title = expenses[i].Name, StrokeThickness = 1, Values = new ChartValues<double> { expenses[i].Cost } });
-            }
-            btnHousing.IsEnabled = false;
 
         }
 

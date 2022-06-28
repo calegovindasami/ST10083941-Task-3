@@ -1,0 +1,112 @@
+﻿<metro:MetroWindow x:Class="ST10083941_PROG6221_Task_3.Main"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ST10083941_PROG6221_Task_3"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        BorderThickness="1"
+        mc:Ignorable="d"
+        Language="en-ZA"
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow" Height="720" Width="1000">
+    <Window.Resources>
+        <Style TargetType="metro:NumericUpDown">
+            <Setter Property="HideUpDownButtons" Value="True"/>
+            <Setter Property="Width" Value="350"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="StringFormat" Value="C2"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Minimum" Value="0"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <TabControl
+                x:Name="tcPage"
+                HorizontalAlignment="Left"
+                Width="1000"
+                Height="auto"
+                Style="{StaticResource MaterialDesignFilledTabControl}"
+                TabStripPlacement="Left">
+            <TabItem Header="Income" HorizontalContentAlignment="Center">
+                <StackPanel HorizontalAlignment="Center" Width="800" Margin="0,100,0,0" Height="580" VerticalAlignment="Top">
+
+
+                    <TextBlock TextDecorations="Underline" FontWeight="BOLD" x:Name="tbIncomeHeader" Grid.Row="0" Margin="32" Grid.Column="0" HorizontalAlignment="Center" FontSize="48">INCOME AND TAX</TextBlock>
+                    <TextBlock x:Name="tbIncome" Grid.Row="1" FontSize="32" Margin="16" HorizontalAlignment="Center">Income</TextBlock>
+                    <metro:NumericUpDown Name="nudIncome" Grid.Row="2" Margin="16" ></metro:NumericUpDown>
+                    <TextBlock Name="tbTax" Grid.Row="3" FontSize="32" HorizontalAlignment="Center" Margin="16">Tax</TextBlock>
+                    <metro:NumericUpDown Name="nudTax" Grid.Row="4" HorizontalAlignment="Center" Margin="16"></metro:NumericUpDown>
+                    <Button x:Name="btnSubmitIncome" materialDesign:ButtonAssist.CornerRadius="12"  Grid.Row="5" Width="300" Height="50" Margin="16" FontSize="28">SUBMIT</Button>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Add Expenses" Name="tiExpenses">
+                <StackPanel Width="800">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="20"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <ComboBox Name="cmbExpenses" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Top" Width="300" materialDesign:HintAssist.Hint="Expense Type" FontSize="20" SelectionChanged="cmbExpenses_SelectionChanged">
+                        <ComboBoxItem Content="Monthly Expenses"/>
+                        <ComboBoxItem Content="Housing"/>
+                        <ComboBoxItem Content="Vehicle Loan"/>
+                        <ComboBoxItem Content="Savings"/>
+                    </ComboBox>
+                    <StackPanel x:Name="pnlVehicle" Height="590" Visibility="Visible">
+                        <TextBlock Name="tbVehicleHeader" FontSize="48" Margin="8" TextDecorations="Underline" HorizontalAlignment="Center" FontWeight="ExtraBlack">VEHICLE</TextBlock>
+                        <TextBlock Name="tbModelHeader"  HorizontalAlignment="Center" Margin="14">Model and Make</TextBlock>
+                        <TextBox Name="txbModel" Style="{StaticResource MaterialDesignOutlinedTextBox}" Width="350" Height="55" FontSize="16"></TextBox>
+
+                        <TextBlock Name="tbVehiclePrice" HorizontalAlignment="Center" Margin="14"> Purchase Price</TextBlock>
+                        <metro:NumericUpDown Name="nudVehiclePrice" ValueChanged="nudVehiclePrice_ValueChanged"></metro:NumericUpDown>
+
+                        <TextBlock Name="tbVehicleDeposit" HorizontalAlignment="Center" Margin="14">Total Deposit</TextBlock>
+                        <metro:NumericUpDown ValueChanged="nudVehicleDeposit_ValueChanged" Name="nudVehicleDeposit"></metro:NumericUpDown>
+
+                        <TextBlock Name="tbVehicleInterestRate" HorizontalAlignment="Center" Margin="14">Interest Rate</TextBlock>
+                        <metro:NumericUpDown ValueChanged="nudVehicleInterestRate_ValueChanged" Name="nudVehicleInterestRate"></metro:NumericUpDown>
+
+                        <TextBlock Name="tbVehicleInsurancePremium" HorizontalAlignment="Center" Margin="14">Insurance Premium</TextBlock>
+                        <metro:NumericUpDown ValueChanged="nudVehicleInsurancePremium_ValueChanged" Name="nudVehicleInsurancePremium"></metro:NumericUpDown>
+
+                        <Button x:Name="btnSubmitVehicle" Click="btnSubmitVehicle_Click" Margin="16" Width="250" FontSize="28" Height="55" materialDesign:ButtonAssist.CornerRadius="20">SUBMIT</Button>
+                    </StackPanel>
+
+                    <StackPanel Name="pnlMonthlyExpenses" Height="590" Visibility="Collapsed">
+                        <TextBlock  Name="tbMonthlyExpensesHeader" Margin="8"  FontSize="48" TextDecorations="Underline" HorizontalAlignment="Center" FontWeight="ExtraBlack" TextWrapping="Wrap" TextAlignment="Center">MONTHLY EXPENSES</TextBlock>
+
+                        <TextBlock x:Name="tbGroceries" HorizontalAlignment="Center" Margin="14" >Groceries</TextBlock>
+                        <metro:NumericUpDown Name="nudGroceries"></metro:NumericUpDown>
+
+                        <TextBlock  Name="tbUtilities" Margin="14" HorizontalAlignment="Center">Utilities</TextBlock>
+                        <metro:NumericUpDown Name="nudUtilities"></metro:NumericUpDown>
+
+                        <TextBlock  x:Name="tbTravelCosts" Margin="14" HorizontalAlignment="Center">Travel Costs</TextBlock>
+                        <metro:NumericUpDown Name="nudTravel"></metro:NumericUpDown>
+                        <TextBlock  Name="tbPhoneExpenses" Margin="12" HorizontalAlignment="Center">Phone Expenses</TextBlock>
+                        <metro:NumericUpDown Name="nudPhoneExpenses"></metro:NumericUpDown>
+
+                        <TextBlock  Name="tbOtherExpenses" Margin="14" HorizontalAlignment="Center">Other Expenses</TextBlock>
+                        <metro:NumericUpDown Name="nudOther"></metro:NumericUpDown>
+
+                        <Button  Margin="18" Width="250" FontSize="28" Height="55" materialDesign:ButtonAssist.CornerRadius="20" Name="btnMonthlyExpenses" >SUBMIT</Button>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="View Expenses" Name="tiViewExpenses" >
+
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</metro:MetroWindow>

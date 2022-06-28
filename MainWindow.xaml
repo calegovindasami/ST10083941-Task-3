@@ -48,7 +48,7 @@
                 </Button>
             </StackPanel>
         </materialDesign:PopupBox>
-        <materialDesign:DialogHost  HorizontalAlignment="Center" VerticalAlignment="Center" Name="dlogHome" DialogTheme="Inherit" IsOpen="False" OverlayBackground="{DynamicResource PrimaryHueDarkBrush}">
+        <materialDesign:DialogHost  HorizontalAlignment="Center" VerticalAlignment="Center" Name="dlogHome" IsOpen="False" DialogTheme="Inherit" Panel.ZIndex="1000">
             <materialDesign:DialogHost.DialogContent>
                 <StackPanel Name="pnlHousing" Width="350" Height="150" Margin="20">
 
@@ -99,6 +99,7 @@
                 </StackPanel>
             </materialDesign:DialogHost.DialogContent>
             <Border
+                Visibility="Collapsed"
                 BorderThickness="1"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                 MinWidth="1280"
@@ -143,6 +144,7 @@
                 MinWidth="1280"
                 MinHeight="720"
                 VerticalAlignment="Bottom"
+
                 ClipToBounds="True">
             </Border>
         </materialDesign:DialogHost>
@@ -213,39 +215,20 @@
                 </StackPanel>
             </materialDesign:DialogHost.DialogContent>
             <Border
+                Visibility="Collapsed"
                 BorderThickness="1"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                 MinWidth="1280"
                 MinHeight="720"
                 VerticalAlignment="Bottom"
-                ClipToBounds="True"/>
+                ClipToBounds="True"
+                />
         </materialDesign:DialogHost>
-
-        <ListView x:Name="lvExpenses"  Style="{StaticResource MaterialDesignListView}" Margin="10,290,868,10">
-            <ListView.Resources>
-                <Style TargetType="{x:Type GridViewColumnHeader}">
-                    <Setter Property="HorizontalContentAlignment" Value="Left" />
-                    <Setter Property="FontSize" Value="26"/>
-                </Style>
-            </ListView.Resources>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Expense" Width="180" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="Amount" Width="180">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Cost}" Foreground="Red"></TextBlock>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth5" materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" Padding="32" Margin="862,290,25,10">
+        <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth5" materialDesign:ShadowAssist.ShadowEdges="All"  Width="400" Height="380" Padding="32" Margin="860,291,10,16">
             <lvc:PieChart Hoverable="False" LegendLocation="Bottom"  x:Name="pcExpenses" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="329" Width="350" Margin="-14,0,-17,-6" StartingRotationAngle="0"/>
         </materialDesign:Card>
 
-        <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth5"  materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" Margin="10,95,868,405">
+        <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth5"  materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" Width="300" Height="150" Margin="478,111,492,426">
             <materialDesign:Card.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="#FFBA2BFF" Offset="1"/>
@@ -254,11 +237,11 @@
             </materialDesign:Card.Background>
             <StackPanel >
                 <TextBlock FontSize="24" Foreground="White" Margin="20" Width="334"><Run Text="Balance:"/></TextBlock>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="64" TextWrapping="Wrap" Foreground="White" Margin="10,0" RenderTransformOrigin="0.5,0.5" Height="96"><Run Text="R 12345"/></TextBlock>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="48" TextWrapping="WrapWithOverflow" Foreground="White" Margin="10,0" RenderTransformOrigin="0.5,0.5" Height="64" Width="auto"><Run Text="R 12456665"/></TextBlock>
             </StackPanel>
         </materialDesign:Card>
 
-        <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth5" materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" Margin="433,95,445,405">
+        <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth5" materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" Width="300" Height="150" Margin="860,111,110,426">
             <materialDesign:Card.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="#FFD100FF"/>
@@ -267,21 +250,40 @@
             </materialDesign:Card.Background>
             <StackPanel>
                 <TextBlock FontSize="24" Foreground="White" Margin="20">Total Expenses</TextBlock>
-                <TextBlock FontSize="60" Foreground="White" HorizontalAlignment="Center">R 1523</TextBlock>
+                <TextBlock FontSize="48" Foreground="White" HorizontalAlignment="Center">R 1523</TextBlock>
             </StackPanel>
         </materialDesign:Card>
 
-        <materialDesign:Card Margin="862,95,25,405" materialDesign:ShadowAssist.ShadowDepth="Depth5" materialDesign:ShadowAssist.ShadowEdges="Top,Left" >
-            <materialDesign:Card.Background>
-                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <GradientStop Color="#FFE82C2C" Offset="0"/>
-                    <GradientStop Color="#FFC639FB" Offset="1"/>
-                </LinearGradientBrush>
-            </materialDesign:Card.Background>
-            <StackPanel>
-                <TextBlock Foreground="White" FontSize="24" Margin="20">Income: </TextBlock>
-                <TextBox Style="{StaticResource MaterialDesignTextBox}" Width="300" FontSize="24" VerticalContentAlignment="Center" Background="White" Height="40"></TextBox>
-            </StackPanel>
+        <materialDesign:Card  materialDesign:ShadowAssist.ShadowDepth="Depth5" materialDesign:ShadowAssist.ShadowEdges="All" Padding="32" Margin="20,291,842,16" Panel.ZIndex="0" >
+            <ListView x:Name="lvExpenses" Margin="-21,44,-28,-12">
+                <ListView.Resources>
+                    <Style TargetType="{x:Type GridViewColumnHeader}">
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="FontSize" Value="32"/>
+                    </Style>
+                </ListView.Resources>
+                <ListView.Style>
+                    <StaticResource ResourceKey="MaterialDesignListView"/>
+                </ListView.Style>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Expense" Width="180">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" FontSize="20"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Amount" Width="180">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Cost}" Foreground="Red" FontSize="20"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </materialDesign:Card>
 
     </Grid>
