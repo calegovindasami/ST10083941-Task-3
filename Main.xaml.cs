@@ -53,6 +53,7 @@ namespace ST10083941_PROG6221_Task_3
             pnlVehicle.Visibility = Visibility.Collapsed;
         }
 
+        //Submit button for the vehicle expense.
         private void btnSubmitVehicle_Click(object sender, RoutedEventArgs e)
         {
             List<NumericUpDown> VehicleNud = new List<NumericUpDown>();
@@ -66,22 +67,45 @@ namespace ST10083941_PROG6221_Task_3
             VehicleTb.Add(tbVehicleInsurancePremium);
             VehicleTb.Add(tbVehicleInterestRate);
             VehicleTb.Add(tbVehiclePrice);
-            ValidateNumericUpDown(VehicleNud, VehicleTb);
+            bool bValidate = true;
+            
+            for (int i = 0; i < VehicleNud.Count; i++)
+            {
+
+                if (VehicleNud[i].Value == null)
+                {
+                    ValidateNumericUpDown(VehicleNud[i], VehicleTb[i]);
+                    bValidate = false;
+                }
+            }
+
+            if (bValidate == true)
+            {
+                MessageBox.Show("Expense added.");
+                ClearNUD(VehicleNud, VehicleTb);
+            }
 
 
         }
 
-        //Checks Numeric Up Down to see if it's empty. If it is a helper message is then displayed telling the user they need to add an input to it.
-        public void ValidateNumericUpDown(List<NumericUpDown> nud, List<TextBlock> tb)
+
+        //Clears the NumericUpDown once the expense is correctly submitted.
+        public void ClearNUD(List<NumericUpDown> nud, List<TextBlock> tb)
         {
             for (int i = 0; i < nud.Count; i++)
             {
-                if (nud[i].Value == null)
-                {
-                    MaterialDesignThemes.Wpf.HintAssist.SetHelperText(nud[i], "You cannot leave the input above empty!");
-                    tb[i].Foreground = Brushes.Red;
-                }
+                nud[i].Value = null;
+                tb[i].Foreground = Brushes.Black;
             }
+        }
+
+        //Checks Numeric Up Down to see if it's empty. If it is a helper message is then displayed telling the user they need to add an input to it.
+        public void ValidateNumericUpDown(NumericUpDown nud, TextBlock tb)
+        {
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHelperText(nud, "You cannot leave the input above empty!");
+            tb.Foreground = Brushes.Red;
+
         }
 
         //Clears helper text if Numeric Up Down value is changed.
@@ -110,6 +134,56 @@ namespace ST10083941_PROG6221_Task_3
         private void nudVehicleInsurancePremium_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
             ValidateValueChangedNUD(nudVehicleInsurancePremium, tbVehicleInsurancePremium);
+        }
+
+        //Submit button for monthly expenses which validate the input before accepting it.
+        private void btnMonthlyExpenses_Click(object sender, RoutedEventArgs e)
+        {
+            List<NumericUpDown> MonthlyExpensesNUD = new List<NumericUpDown> { nudGroceries, nudUtilities, nudTravel, nudPhoneExpenses, nudOther };
+            List<TextBlock> MonthlyExpensesTb = new List<TextBlock> { tbGroceries, tbUtilities, tbTravelCosts, tbPhoneExpenses, tbOtherExpenses };
+
+            bool bValidate = true;
+
+            for (int i = 0; i < MonthlyExpensesNUD.Count; i++)
+            {
+                if (MonthlyExpensesNUD[i].Value == null)
+                {
+                    ValidateNumericUpDown(MonthlyExpensesNUD[i], MonthlyExpensesTb[i]);
+                    bValidate = false;
+                }
+            }
+
+            if (bValidate == true)
+            {
+                MessageBox.Show("Expense added.");
+                ClearNUD(MonthlyExpensesNUD, MonthlyExpensesTb);
+            }
+        }
+
+        //Value change events for the Monthly Expense controls to allow validation on value change.
+        private void nudGroceries_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudGroceries, tbGroceries);
+        }
+
+        private void nudUtilities_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudUtilities, tbUtilities);
+        }
+
+        private void nudTravel_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudTravel, tbTravelCosts);
+        }
+
+        private void nudPhoneExpenses_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudPhoneExpenses, tbPhoneExpenses);
+        }
+
+        private void nudOther_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudOther, tbOtherExpenses);
         }
     }
 }
