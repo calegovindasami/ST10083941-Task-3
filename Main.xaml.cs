@@ -37,6 +37,11 @@ namespace ST10083941_PROG6221_Task_3
                     CollapseExpensePanels();
                     pnlMonthlyExpenses.Visibility = Visibility.Visible;
                     break;
+
+                case 1:
+                    CollapseExpensePanels();
+                    gridHousing.Visibility = Visibility.Visible;
+                    break;
                
                 case 2:
                     CollapseExpensePanels();
@@ -58,6 +63,7 @@ namespace ST10083941_PROG6221_Task_3
             pnlMonthlyExpenses.Visibility = Visibility.Collapsed;
             pnlVehicle.Visibility = Visibility.Collapsed;
             gridSavings.Visibility = Visibility.Collapsed;
+            gridHousing.Visibility = Visibility.Collapsed;
         }
 
         //Submit button for the vehicle expense.
@@ -74,6 +80,8 @@ namespace ST10083941_PROG6221_Task_3
             lstVehicleTB.Add(tbVehicleInsurancePremium);
             lstVehicleTB.Add(tbVehicleInterestRate);
             lstVehicleTB.Add(tbVehiclePrice);
+
+            List<TextBlock> lstVehicleSubmit = new List<TextBlock> { tbSubmitVehicleDeposit, tbSubmitVehicleInsurancePremium, tbSubmitVehicleInterestRate, tbSubmitVeiclePrice };
             bool bValidate = true;
             
             for (int i = 0; i < lstVehicleNUD.Count; i++)
@@ -86,15 +94,46 @@ namespace ST10083941_PROG6221_Task_3
                 }
             }
 
+            if (txbModel.Text.Length <= 0)
+            {
+                MaterialDesignThemes.Wpf.HintAssist.SetHelperText(txbModel, "You cannot leave the Model of the car empty!");
+                tbModelHeader.Foreground = Brushes.Red;
+                bValidate = false;
+            }
+
             if (bValidate == true)
             {
                 MessageBox.Show("Expense added.");
-                ClearNUD(lstVehicleNUD, lstVehicleTB);
+
+                SubmitExpenseDetails(lstVehicleNUD, lstVehicleSubmit);
+                tbSubmitVehicleMake.Text = txbModel.Text;
+                tbSubmitVehicleMake.Visibility = Visibility.Visible;
+                txbModel.Visibility = Visibility.Collapsed;
             }
 
 
-        }
 
+        }
+         
+
+        //Displays expenses within textblock once the user submits the corresponding expense.
+        public void SubmitExpenseDetails(List<NumericUpDown> nud, List<TextBlock> tb)
+        {
+            for (int i = 0; i < nud.Count; i++)
+            {
+                if (nud[i].StringFormat == "P")
+                {
+                    tb[i].Text = String.Format("{0:P}", nud[i].Value);
+                }
+                else
+                {
+                    tb[i].Text = String.Format("{0:C2}", nud[i].Value);
+                }
+                tb[i].Visibility = Visibility.Visible;
+                tb[i].Foreground = Brushes.Red;
+                nud[i].Visibility = Visibility.Collapsed;
+            }
+        }
 
         //Clears the NumericUpDown once the expense is correctly submitted.
         public void ClearNUD(List<NumericUpDown> nud, List<TextBlock> tb)
@@ -122,10 +161,16 @@ namespace ST10083941_PROG6221_Task_3
             tb.Foreground = nud.Value > 0 ? Brushes.Green : Brushes.Red;
         }
 
+        private void txbModel_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            MaterialDesignThemes.Wpf.HintAssist.SetHelperText(txbModel, null);
+            tbModelHeader.Foreground = tbModelHeader.Text != null ? Brushes.Green : Brushes.Red;
+        }
 
         private void nudVehiclePrice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
             ValidateValueChangedNUD(nudVehiclePrice, tbVehiclePrice);
+            nudVehicleDeposit.Maximum = (double)nudVehiclePrice.Value;
         }
 
         private void nudVehicleDeposit_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
@@ -148,7 +193,7 @@ namespace ST10083941_PROG6221_Task_3
         {
             List<NumericUpDown> lstMonthlyExpensesNUD = new List<NumericUpDown> { nudGroceries, nudUtilities, nudTravel, nudPhoneExpenses, nudOther };
             List<TextBlock> lstMonthlyExpensesTB = new List<TextBlock> { tbGroceries, tbUtilities, tbTravelCosts, tbPhoneExpenses, tbOtherExpenses };
-
+            List<TextBlock> lstSubmitMonthlyExpenses = new List<TextBlock> { tbSubmitGroceries, tbSubmitUtilities, tbSubmitTravelCosts, tbSubmitPhoneExpenses, tbSubmitOtherExpenses };
             bool bValidate = true;
 
             for (int i = 0; i < lstMonthlyExpensesNUD.Count; i++)
@@ -163,7 +208,7 @@ namespace ST10083941_PROG6221_Task_3
             if (bValidate == true)
             {
                 MessageBox.Show("Expense added.");
-                ClearNUD(lstMonthlyExpensesNUD, lstMonthlyExpensesTB);
+                SubmitExpenseDetails(lstMonthlyExpensesNUD, lstSubmitMonthlyExpenses);
             }
         }
 
@@ -219,7 +264,7 @@ namespace ST10083941_PROG6221_Task_3
             if (txbSavingsReason.Text.Length <= 0)
             {
                 bValid = false;
-                MaterialDesignThemes.Wpf.HintAssist.SetHelperText(txbSavingsReason, "You cannot leave the reason empty!");
+                MaterialDesignThemes.Wpf.HintAssist.SetHelperText(txbSavingsReason, "You cannot leave the savings reason empty!");
                 tbSavingsReason.Foreground = Brushes.Red;
             }
 
@@ -307,5 +352,50 @@ namespace ST10083941_PROG6221_Task_3
         {
             ValidateValueChangedNUD(nudRent, tbRenting);
         }
+
+        //Submit button for home loan which adds the expense to the expense list array and validates input.
+        private void btnHomeLoan_Click(object sender, RoutedEventArgs e)
+        {
+            List<NumericUpDown> lstHomeLoanNUD = new List<NumericUpDown> { nudPropertyPrice, nudTotalDeposit, nudPropertyInterestRate, nudPropertyMonths};
+            List<TextBlock> lstHomeLoanTB = new List<TextBlock> { tbPropertyPrice, tbTotalDeposit, tbPropertyInterestRate, tbPropertyMonths };
+            bool bValid = true;
+            for (int i = 0; i < lstHomeLoanNUD.Count; i++)
+            {
+                if (lstHomeLoanNUD[i].Value == null)
+                {
+                    ValidateNumericUpDown(lstHomeLoanNUD[i], lstHomeLoanTB[i]);
+                    bValid = false;
+                }
+            }
+
+            if (bValid == true)
+            {
+                MessageBox.Show("Expense added.");
+                tgRent.IsEnabled = false;
+                tgLoan.IsEnabled = false;
+            }
+        }
+
+        //---------Helper text and color configured based on the user input.-------------
+        private void nudPropertyPrice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudPropertyPrice, tbPropertyPrice);
+        }
+
+        private void nudTotalDeposit_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudTotalDeposit, tbTotalDeposit);
+        }
+
+        private void nudPropertyInterestRate_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudPropertyInterestRate, tbPropertyInterestRate);
+        }
+
+        private void nudPropertyMonths_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudPropertyMonths, tbPropertyMonths);
+        }
+
     }
 }

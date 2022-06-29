@@ -68,20 +68,25 @@
                     <StackPanel x:Name="pnlVehicle" Visibility="Collapsed">
                         <TextBlock Name="tbVehicleHeader" FontSize="48" Margin="8" TextDecorations="Underline" HorizontalAlignment="Center" FontWeight="ExtraBlack">VEHICLE</TextBlock>
                         <TextBlock Name="tbModelHeader"  HorizontalAlignment="Center" Margin="14">Model and Make</TextBlock>
-                        <TextBox Name="txbModel" Style="{StaticResource MaterialDesignOutlinedTextBox}" Width="350" Height="55" FontSize="16"></TextBox>
+                        <TextBox TextChanged="txbModel_TextChanged" Name="txbModel" Style="{StaticResource MaterialDesignOutlinedTextBox}" Width="350" Height="55" FontSize="16"></TextBox>
+                        <TextBlock Visibility="Collapsed" Name="tbSubmitVehicleMake" HorizontalAlignment="Center"></TextBlock>
 
                         <TextBlock Name="tbVehiclePrice" HorizontalAlignment="Center" Margin="14"> Purchase Price</TextBlock>
                         <metro:NumericUpDown Name="nudVehiclePrice" ValueChanged="nudVehiclePrice_ValueChanged"></metro:NumericUpDown>
+                        <TextBlock Visibility="Collapsed" Name="tbSubmitVeiclePrice" HorizontalAlignment="Center"></TextBlock>
 
                         <TextBlock Name="tbVehicleDeposit" HorizontalAlignment="Center" Margin="14">Total Deposit</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudVehicleDeposit_ValueChanged" Name="nudVehicleDeposit"></metro:NumericUpDown>
-
+                        <TextBlock Visibility="Collapsed" Name="tbSubmitVehicleDeposit"  HorizontalAlignment="Center"></TextBlock>
+                        
                         <TextBlock Name="tbVehicleInterestRate" HorizontalAlignment="Center" Margin="14">Interest Rate</TextBlock>
-                        <metro:NumericUpDown ValueChanged="nudVehicleInterestRate_ValueChanged" Name="nudVehicleInterestRate" StringFormat="P" Maximum="100"></metro:NumericUpDown>
-
+                        <metro:NumericUpDown ValueChanged="nudVehicleInterestRate_ValueChanged" Name="nudVehicleInterestRate" StringFormat="P" Maximum="1"></metro:NumericUpDown>
+                        <TextBlock Visibility="Collapsed" Name="tbSubmitVehicleInterestRate"  HorizontalAlignment="Center"></TextBlock>
+                        
                         <TextBlock Name="tbVehicleInsurancePremium" HorizontalAlignment="Center" Margin="14">Insurance Premium</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudVehicleInsurancePremium_ValueChanged" Name="nudVehicleInsurancePremium"></metro:NumericUpDown>
-
+                        <TextBlock Visibility="Collapsed" Name="tbSubmitVehicleInsurancePremium"  HorizontalAlignment="Center"></TextBlock>
+                        
                         <Button x:Name="btnSubmitVehicle" Click="btnSubmitVehicle_Click" Margin="16" Width="250" FontSize="28" Height="55" materialDesign:ButtonAssist.CornerRadius="20">SUBMIT</Button>
                     </StackPanel>
 
@@ -90,18 +95,23 @@
 
                         <TextBlock x:Name="tbGroceries" HorizontalAlignment="Center" Margin="14" >Groceries</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudGroceries_ValueChanged" Name="nudGroceries"></metro:NumericUpDown>
-
+                        <TextBlock Name="tbSubmitGroceries" Visibility="Collapsed" HorizontalAlignment="Center"></TextBlock>
+                        
                         <TextBlock  Name="tbUtilities" Margin="14" HorizontalAlignment="Center">Utilities</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudUtilities_ValueChanged" Name="nudUtilities"></metro:NumericUpDown>
+                        <TextBlock Name="tbSubmitUtilities" Visibility="Collapsed" HorizontalAlignment="Center"></TextBlock>
 
                         <TextBlock  x:Name="tbTravelCosts" Margin="14" HorizontalAlignment="Center">Travel Costs</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudTravel_ValueChanged" Name="nudTravel"></metro:NumericUpDown>
+                        <TextBlock Name="tbSubmitTravelCosts" Visibility="Collapsed" HorizontalAlignment="Center"></TextBlock>
 
                         <TextBlock  Name="tbPhoneExpenses" Margin="14" HorizontalAlignment="Center">Phone Expenses</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudPhoneExpenses_ValueChanged" Name="nudPhoneExpenses"></metro:NumericUpDown>
+                        <TextBlock Name="tbSubmitPhoneExpenses" Visibility="Collapsed" HorizontalAlignment="Center"></TextBlock>
 
                         <TextBlock  Name="tbOtherExpenses" Margin="14" HorizontalAlignment="Center">Other Expenses</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudOther_ValueChanged" Name="nudOther"></metro:NumericUpDown>
+                        <TextBlock Name="tbSubmitOtherExpenses" Visibility="Collapsed" HorizontalAlignment="Center"></TextBlock>
 
                         <Button  Click="btnMonthlyExpenses_Click" Margin="18" Width="250" FontSize="28" Height="55" materialDesign:ButtonAssist.CornerRadius="20" Name="btnMonthlyExpenses" >SUBMIT</Button>
                     </StackPanel>
@@ -127,7 +137,7 @@
 
                         <StackPanel Grid.Row="2">
                             <TextBlock  x:Name="tbSavingsInterestRate" HorizontalAlignment="Center" Margin="14" >Interest Rate</TextBlock>
-                            <metro:NumericUpDown ValueChanged="nudSavingsInterestRate_ValueChanged" Name="nudSavingsInterestRate" StringFormat="P" Maximum="100"></metro:NumericUpDown>
+                            <metro:NumericUpDown ValueChanged="nudSavingsInterestRate_ValueChanged" Name="nudSavingsInterestRate" StringFormat="P" Maximum="1"></metro:NumericUpDown>
                         </StackPanel>
 
                         <StackPanel Grid.Row="3">
@@ -143,7 +153,7 @@
                         <Button Name="btnSavings" Click="btnSavings_Click" Grid.Row="5" Width="250" Margin="18" FontSize="28" Height="55"  materialDesign:ButtonAssist.CornerRadius="20">SUBMIT</Button>
                     </Grid>
 
-                    <Grid>
+                    <Grid x:Name="gridHousing" Visibility="Collapsed">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
@@ -173,25 +183,25 @@
                         <StackPanel x:Name="pnlLoan"  Grid.Row="2" Grid.RowSpan="5" Visibility="Collapsed">
                             <StackPanel>
                                 <TextBlock x:Name="tbPropertyPrice" HorizontalAlignment="Center" Margin="14" >Property Price</TextBlock>
-                                <metro:NumericUpDown Name="nudPropertyPrice"></metro:NumericUpDown>
+                                <metro:NumericUpDown Name="nudPropertyPrice" ValueChanged="nudPropertyPrice_ValueChanged"></metro:NumericUpDown>
                             </StackPanel>
 
                             <StackPanel>
                                 <TextBlock x:Name="tbTotalDeposit" HorizontalAlignment="Center" Margin="14" >Total Deposit</TextBlock>
-                                <metro:NumericUpDown Name="nudTotalDeposit"></metro:NumericUpDown>
+                                <metro:NumericUpDown Name="nudTotalDeposit" ValueChanged="nudTotalDeposit_ValueChanged"></metro:NumericUpDown>
                             </StackPanel>
 
                             <StackPanel>
                                 <TextBlock x:Name="tbPropertyInterestRate" HorizontalAlignment="Center" Margin="14" >Interest Rate</TextBlock>
-                                <metro:NumericUpDown Name="nudPropertyInterestRate" StringFormat="P" Maximum="100"></metro:NumericUpDown>
+                                <metro:NumericUpDown Name="nudPropertyInterestRate" StringFormat="P" Maximum="1" ValueChanged="nudPropertyInterestRate_ValueChanged"></metro:NumericUpDown>
                             </StackPanel>
 
                             <StackPanel>
                                 <TextBlock x:Name="tbPropertyMonths" HorizontalAlignment="Center" Margin="14" >Months to Repay</TextBlock>
-                                <metro:NumericUpDown Name="nudPropertyMonths"></metro:NumericUpDown>
+                                <metro:NumericUpDown Name="nudPropertyMonths" ValueChanged="nudPropertyMonths_ValueChanged"></metro:NumericUpDown>
                             </StackPanel>
 
-                            <Button Name="btnHomeLoan" Width="250" Margin="18" Height="55" FontSize="28" materialDesign:ButtonAssist.CornerRadius="20">SUBMIT</Button>
+                            <Button Name="btnHomeLoan" Click="btnHomeLoan_Click" Width="250" Margin="18" Height="55" FontSize="28" materialDesign:ButtonAssist.CornerRadius="20">SUBMIT</Button>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
