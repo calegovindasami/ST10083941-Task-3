@@ -17,6 +17,8 @@ using MaterialDesignColors;
 using LiveCharts;
 using LiveCharts.Wpf;
 using ST10083941_PROG6221_Task_3.Classes;
+using System.ComponentModel;
+
 namespace ST10083941_PROG6221_Task_3
 {
     /// <summary>
@@ -42,6 +44,8 @@ namespace ST10083941_PROG6221_Task_3
         const int UTILITY = 7;
         const int VEHICLE = 8;
 
+        //Colection view to manipulate order of expenses.
+        CollectionView view;
 
 
         //Formatter for the Y-Axis of the line chart.
@@ -57,6 +61,7 @@ namespace ST10083941_PROG6221_Task_3
             InitializeComponent();
             cmbExpenses.SelectedIndex = 0;
             Years = GenerateYears();
+
 
             //SeriesCollection to store Income, Expenses and Account Balance to display on a Line Series.
             SeriesCollection = new SeriesCollection
@@ -83,6 +88,7 @@ namespace ST10083941_PROG6221_Task_3
             //Formats the Y-Axis to currency.
             YFormatter = value => value.ToString("C2");
             lvExpenses.ItemsSource = expense;
+            view = (CollectionView)CollectionViewSource.GetDefaultView(lvExpenses.ItemsSource);
             DataContext = this;
         }
 
@@ -184,7 +190,7 @@ namespace ST10083941_PROG6221_Task_3
                 vehicle.SetCost(Math.Round(monthlyCost, 2));
                 MessageBox.Show(Convert.ToString(vehicle.Cost));
                 expense.Add(vehicle);
-                lvExpenses.Items.Refresh();
+                DescendingOrder();
 
                 //Displays expenses and changes visiblity of controls.
                 SubmitExpenseDetails(lstVehicleNUD, lstVehicleSubmit);
@@ -317,7 +323,7 @@ namespace ST10083941_PROG6221_Task_3
                 expense.Add(travel);
                 expense.Add(phoneBill);
                 expense.Add(other);
-                lvExpenses.Items.Refresh();
+                DescendingOrder();
 
                 //Changes control properties to display expenses.
                 btnMonthlyExpenses.Visibility = Visibility.Collapsed;
@@ -393,6 +399,9 @@ namespace ST10083941_PROG6221_Task_3
 
             if (bValid == true)
             {
+
+
+                //Changes display options to display expenses.
                 SubmitExpenseDetails(lstSavingsNUD, lstSubmitSavings);
                 btnSavings.Visibility = Visibility.Collapsed;
                 tbSubmitSavingsReason.Text = txbSavingsReason.Text;
@@ -516,7 +525,7 @@ namespace ST10083941_PROG6221_Task_3
                 double monthlyLoanCost = homeLoan.CalculateCost(HomeLoanWarning);
                 homeLoan.SetCost(Math.Round(monthlyLoanCost, 2));
                 expense.Add(homeLoan);
-                lvExpenses.Items.Refresh();
+                DescendingOrder();
 
                 //Changes components visibility to display the expenses.
                 SubmitExpenseDetails(lstHomeLoanNUD, lstSubmitHomeLoan);
@@ -559,5 +568,27 @@ namespace ST10083941_PROG6221_Task_3
             ValidateValueChangedNUD(nudPropertyMonths, tbPropertyMonths);
         }
 
+        private void btnAscending_Click(object sender, RoutedEventArgs e)
+        {
+            AscendingOrder();
+        }
+
+        public void AscendingOrder()
+        {
+            List<Expenses> AscendingExpenses = expense.OrderBy(bill => bill.Cost).ToList();
+            lvExpenses.ItemsSource = AscendingExpenses;
+            lvExpenses.Items.Refresh();
+        }
+        public void DescendingOrder()
+        {
+            List<Expenses> DescendingExpenses = expense.OrderByDescending(bill => bill.Cost).ToList();
+            lvExpenses.ItemsSource = DescendingExpenses;
+            lvExpenses.Items.Refresh();
+        }
+
+        private void btnDescending_Click(object sender, RoutedEventArgs e)
+        {
+            DescendingOrder();
+        }
     }
 }

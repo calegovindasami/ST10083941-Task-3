@@ -218,7 +218,8 @@
             </TabItem>
             <TabItem Header="View Expenses" Name="tiViewExpenses" >
                 <Grid>
-
+                    <Button Name="btnAscending" Click="btnAscending_Click" Width="190" Margin="10,250,666,405">Ascending</Button>
+                    <Button Name="btnDescending" Click="btnDescending_Click" Width="190" Margin="210,250,466,405">Descending</Button>
                     <ListView Width="400" Height="400" HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="lvExpenses">
                         <ListView.Resources>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
