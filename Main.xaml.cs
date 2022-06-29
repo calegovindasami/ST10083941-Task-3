@@ -14,7 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MaterialDesignThemes;
 using MaterialDesignColors;
-
+using LiveCharts;
+using LiveCharts.Wpf;
+using ST10083941_PROG6221_Task_3.Classes;
 namespace ST10083941_PROG6221_Task_3
 {
     /// <summary>
@@ -22,11 +24,68 @@ namespace ST10083941_PROG6221_Task_3
     /// </summary>
     public partial class Main : MetroWindow
     {
+        //TEMP INCOME
+        double income = 20000;
+
+
+        //List of each expense object
+        List<Expenses> expense = new List<Expenses>();
+
+        //Constants to keep track of the position of each object within the list.
+        const int GROCERIES = 0;
+        const int HOMELOAN = 1;
+        const int OTHER = 2;
+        const int PHONEBILL = 3;
+        const int RENT = 4;
+        const int TAX = 5;
+        const int TRAVEL = 6;
+        const int UTILITY = 7;
+        const int VEHICLE = 8;
+
+
+
+        //Formatter for the Y-Axis of the line chart.
+        public Func<double, string> YFormatter { get; set; }
+
+        //Formatter for the X-Axis of the line chart.
+        public string[] Years { get; set; }
+        //Collection to bind to the line graph.
+        public SeriesCollection SeriesCollection { get; set; }
+
         public Main()
         {
             InitializeComponent();
             cmbExpenses.SelectedIndex = 0;
+            Years = GenerateYears();
+
+            //SeriesCollection to store Income, Expenses and Account Balance to display on a Line Series.
+            SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Income",
+                    Values = new ChartValues<double> {1000, 2500, 5000, 7500, 10000}
+                },
+
+                new LineSeries
+                {
+                    Title = "Expenses",
+                    Values = new ChartValues<double> {2000, 4000, 6000, 8000, 12000}
+                },
+
+                new LineSeries
+                {
+                    Title = "Account Balance",
+                    Values = new ChartValues<double> {1000, 1500, 2000, 2000, 3000}
+                }
+            };
+
+            //Formats the Y-Axis to currency.
+            YFormatter = value => value.ToString("C2");
+            lvExpenses.ItemsSource = expense;
+            DataContext = this;
         }
+
 
         //Changes the form based on what the user selects from the combo box in the expense tab.
         private void cmbExpenses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -56,6 +115,18 @@ namespace ST10083941_PROG6221_Task_3
                 default:
                     break;
             }
+        }
+
+        public string[] GenerateYears()
+        {
+            DateTime currentYear = DateTime.Today;
+            int[] Years = new[] { currentYear.Year, currentYear.AddYears(1).Year, currentYear.AddYears(2).Year, currentYear.AddYears(3).Year, currentYear.AddYears(4).Year, currentYear.AddYears(5).Year, currentYear.AddYears(6).Year };
+            string[] strYears = new string[6];
+            for (int i = 0; i < 6; i++)
+            {
+                strYears[i] = Convert.ToString(Years[i]);
+            }
+            return strYears;
         }
 
         //Collapses the expense panels in the expense tab.
@@ -106,6 +177,16 @@ namespace ST10083941_PROG6221_Task_3
             {
                 MessageBox.Show("Expense added.");
 
+                //Creates Vehicle object and assigns the values required to calculate monthly repayment. Then adds it to the expense List and refreshes the List View.
+                Vehicle vehicle = new Vehicle("Vehicle");
+                vehicle.SetProperties( txbModel.Text, (double) nudVehiclePrice.Value, (double)nudVehicleDeposit.Value, (double)nudVehicleInterestRate.Value, (double)nudVehicleInsurancePremium.Value );
+                double monthlyCost = vehicle.CalculateRepayment();
+                vehicle.SetCost(Math.Round(monthlyCost, 2));
+                MessageBox.Show(Convert.ToString(vehicle.Cost));
+                expense.Add(vehicle);
+                lvExpenses.Items.Refresh();
+
+                //Displays expenses and changes visiblity of controls.
                 SubmitExpenseDetails(lstVehicleNUD, lstVehicleSubmit);
                 btnSubmitVehicle.Visibility = Visibility.Collapsed;
                 tbSubmitVehicleMake.Text = txbModel.Text;
@@ -214,7 +295,31 @@ namespace ST10083941_PROG6221_Task_3
 
             if (bValidate == true)
             {
-                MessageBox.Show("Expense added.");
+                //Creates objects and assigns corresponding value to each object.
+                Groceries groceries = new Groceries("Groceries");
+                groceries.SetCost((double)nudGroceries.Value);
+
+                Utility utility = new Utility("Utilites");
+                utility.SetCost((double)nudUtilities.Value);
+
+                Travel travel = new Travel("Travel");
+                travel.SetCost((double)nudTravel.Value);
+
+                PhoneBill phoneBill = new PhoneBill("Phone Bill");
+                phoneBill.SetCost((double)nudPhoneExpenses.Value);
+
+                Other other = new Other("Other");
+                other.SetCost((double)nudOther.Value);
+
+                //Adds each expense to the list if expenses.
+                expense.Add(groceries);
+                expense.Add(utility);
+                expense.Add(travel);
+                expense.Add(phoneBill);
+                expense.Add(other);
+                lvExpenses.Items.Refresh();
+
+                //Changes control properties to display expenses.
                 btnMonthlyExpenses.Visibility = Visibility.Collapsed;
                 SubmitExpenseDetails(lstMonthlyExpensesNUD, lstSubmitMonthlyExpenses);
             }
@@ -405,7 +510,15 @@ namespace ST10083941_PROG6221_Task_3
 
             if (bValid == true)
             {
-                MessageBox.Show("Expense added.");
+                //Creates home loan object, calculates monthly loan payment and adds it to the expense list.
+                HomeLoan homeLoan = new HomeLoan("Home Loan");
+                homeLoan.SetProperties((double)nudPropertyPrice.Value, (double)nudTotalDeposit.Value, (double)nudPropertyInterestRate.Value ,(int)nudPropertyMonths.Value, income);
+                double monthlyLoanCost = homeLoan.CalculateCost(HomeLoanWarning);
+                homeLoan.SetCost(Math.Round(monthlyLoanCost, 2));
+                expense.Add(homeLoan);
+                lvExpenses.Items.Refresh();
+
+                //Changes components visibility to display the expenses.
                 SubmitExpenseDetails(lstHomeLoanNUD, lstSubmitHomeLoan);
                 tgRent.IsEnabled = false;
                 btnHomeLoan.Visibility = Visibility.Collapsed;
@@ -413,11 +526,22 @@ namespace ST10083941_PROG6221_Task_3
             }
         }
 
+        public void HomeLoanWarning(double loan)
+        {
+            if (loan > (income * 0.75))
+            {
+                tbHomeLoanWarning.Visibility = Visibility.Visible;
+            }
+        }
+
         //---------Helper text and color configured based on the user input.-------------
         private void nudPropertyPrice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
             ValidateValueChangedNUD(nudPropertyPrice, tbPropertyPrice);
-            nudTotalDeposit.Maximum = (double)nudPropertyPrice.Value;
+            if (nudPropertyPrice.Value != null)
+            {
+                nudTotalDeposit.Maximum = (double)nudPropertyPrice.Value;
+            }
         }
 
         private void nudTotalDeposit_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)

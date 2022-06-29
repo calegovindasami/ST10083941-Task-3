@@ -104,6 +104,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\Expenses.cs" />
+    <Compile Include="Classes\Groceries.cs" />
+    <Compile Include="Classes\HomeLoan.cs" />
+    <Compile Include="Classes\Other.cs" />
+    <Compile Include="Classes\PhoneBill.cs" />
+    <Compile Include="Classes\Rent.cs" />
+    <Compile Include="Classes\Tax.cs" />
+    <Compile Include="Classes\Travel.cs" />
+    <Compile Include="Classes\Utility.cs" />
+    <Compile Include="Classes\Vehicle.cs" />
     <Compile Include="Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>
