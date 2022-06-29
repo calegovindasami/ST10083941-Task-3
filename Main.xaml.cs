@@ -106,8 +106,10 @@ namespace ST10083941_PROG6221_Task_3
                 MessageBox.Show("Expense added.");
 
                 SubmitExpenseDetails(lstVehicleNUD, lstVehicleSubmit);
+                btnSubmitVehicle.Visibility = Visibility.Collapsed;
                 tbSubmitVehicleMake.Text = txbModel.Text;
                 tbSubmitVehicleMake.Visibility = Visibility.Visible;
+                tbSubmitVehicleMake.Foreground = Brushes.Red;
                 txbModel.Visibility = Visibility.Collapsed;
             }
 
@@ -125,9 +127,13 @@ namespace ST10083941_PROG6221_Task_3
                 {
                     tb[i].Text = String.Format("{0:P}", nud[i].Value);
                 }
-                else
+                else if (nud[i].StringFormat == "C2")
                 {
                     tb[i].Text = String.Format("{0:C2}", nud[i].Value);
+                }
+                else if (nud[i].StringFormat == "G")
+                {
+                    tb[i].Text = Convert.ToString(nud[i].Value);
                 }
                 tb[i].Visibility = Visibility.Visible;
                 tb[i].Foreground = Brushes.Red;
@@ -208,6 +214,7 @@ namespace ST10083941_PROG6221_Task_3
             if (bValidate == true)
             {
                 MessageBox.Show("Expense added.");
+                btnMonthlyExpenses.Visibility = Visibility.Collapsed;
                 SubmitExpenseDetails(lstMonthlyExpensesNUD, lstSubmitMonthlyExpenses);
             }
         }
@@ -243,6 +250,7 @@ namespace ST10083941_PROG6221_Task_3
         {
             List<NumericUpDown> lstSavingsNUD = new List<NumericUpDown> { nudSavingsAmount, nudSavingsInterestRate };
             List<TextBlock> lstSavingsTB = new List<TextBlock> { tbSavingsAmount, tbSavingsInterestRate };
+            List<TextBlock> lstSubmitSavings = new List<TextBlock> { tbSubmitSavingsAmount, tbSubmitSavingsInterestRate };
             bool bValid = true;
 
             for (int i = 0; i < lstSavingsNUD.Count; i++)
@@ -270,9 +278,20 @@ namespace ST10083941_PROG6221_Task_3
 
             if (bValid == true)
             {
+                SubmitExpenseDetails(lstSavingsNUD, lstSubmitSavings);
+                btnSavings.Visibility = Visibility.Collapsed;
+                tbSubmitSavingsReason.Text = txbSavingsReason.Text;
+                txbSavingsReason.Visibility = Visibility.Collapsed;
+                tbSubmitSavingsReason.Visibility = Visibility.Visible;
+                tbSubmitSavingsDate.Text = dateSavings.Text;
+                tbSubmitSavingsReason.Foreground = Brushes.Red;
+                tbSubmitSavingsDate.Foreground = Brushes.Red;
+                dateSavings.Visibility = Visibility.Collapsed;
+                tbSubmitSavingsDate.Visibility = Visibility.Visible;
                 MessageBox.Show("Expense added.");
             }
         }
+
 
         //Value on change for the Savings tab to either clear or show error regarding input.
         private void nudSavingsAmount_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
@@ -342,7 +361,11 @@ namespace ST10083941_PROG6221_Task_3
             if (bValid == true)
             {
                 MessageBox.Show("Expense added.");
+                tbSubmitRent.Text = String.Format("{0:C2}", nudRent.Value);
+                nudRent.Visibility = Visibility.Collapsed;
+                tbSubmitRent.Visibility = Visibility.Visible;
                 tgRent.IsEnabled = false;
+                btnRent.Visibility = Visibility.Collapsed;
                 tgLoan.IsEnabled = false;
             }
         }
@@ -358,6 +381,7 @@ namespace ST10083941_PROG6221_Task_3
         {
             List<NumericUpDown> lstHomeLoanNUD = new List<NumericUpDown> { nudPropertyPrice, nudTotalDeposit, nudPropertyInterestRate, nudPropertyMonths};
             List<TextBlock> lstHomeLoanTB = new List<TextBlock> { tbPropertyPrice, tbTotalDeposit, tbPropertyInterestRate, tbPropertyMonths };
+            List<TextBlock> lstSubmitHomeLoan = new List<TextBlock> { tbSubmitPropertyPrice, tbSubmitTotalDeposit, tbSubmitPropertyInterestRate, tbSubmitPropertyMonths};
             bool bValid = true;
             for (int i = 0; i < lstHomeLoanNUD.Count; i++)
             {
@@ -371,7 +395,9 @@ namespace ST10083941_PROG6221_Task_3
             if (bValid == true)
             {
                 MessageBox.Show("Expense added.");
+                SubmitExpenseDetails(lstHomeLoanNUD, lstSubmitHomeLoan);
                 tgRent.IsEnabled = false;
+                btnHomeLoan.Visibility = Visibility.Collapsed;
                 tgLoan.IsEnabled = false;
             }
         }

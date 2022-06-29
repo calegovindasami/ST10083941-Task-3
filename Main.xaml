@@ -66,7 +66,7 @@
                         <ComboBoxItem Content="Savings"/>
                     </ComboBox>
                     <StackPanel x:Name="pnlVehicle" Visibility="Collapsed">
-                        <TextBlock Name="tbVehicleHeader" FontSize="48" Margin="8" TextDecorations="Underline" HorizontalAlignment="Center" FontWeight="ExtraBlack">VEHICLE</TextBlock>
+                        <TextBlock Name="tbVehicleHeader" FontSize="48" Margin="8" TextDecorations="Underline" HorizontalAlignment="Center" FontWeight="ExtraBlack" Foreground="{StaticResource PrimaryHueMidBrush}">VEHICLE</TextBlock>
                         <TextBlock Name="tbModelHeader"  HorizontalAlignment="Center" Margin="14">Model and Make</TextBlock>
                         <TextBox TextChanged="txbModel_TextChanged" Name="txbModel" Style="{StaticResource MaterialDesignOutlinedTextBox}" Width="350" Height="55" FontSize="16"></TextBox>
                         <TextBlock Visibility="Collapsed" Name="tbSubmitVehicleMake" HorizontalAlignment="Center"></TextBlock>
@@ -91,7 +91,7 @@
                     </StackPanel>
 
                     <StackPanel Name="pnlMonthlyExpenses" Height="590" Visibility="Collapsed">
-                        <TextBlock  Name="tbMonthlyExpensesHeader" Margin="8"  FontSize="48" TextDecorations="Underline" HorizontalAlignment="Center" FontWeight="ExtraBlack" TextWrapping="Wrap" TextAlignment="Center">MONTHLY EXPENSES</TextBlock>
+                        <TextBlock  Name="tbMonthlyExpensesHeader" Margin="8"  FontSize="48" TextDecorations="Underline" HorizontalAlignment="Center" FontWeight="ExtraBlack" TextWrapping="Wrap" TextAlignment="Center" Foreground="{StaticResource PrimaryHueMidBrush}">MONTHLY EXPENSES</TextBlock>
 
                         <TextBlock x:Name="tbGroceries" HorizontalAlignment="Center" Margin="14" >Groceries</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudGroceries_ValueChanged" Name="nudGroceries"></metro:NumericUpDown>
@@ -128,26 +128,30 @@
                             <RowDefinition Height="*"></RowDefinition>
                             <RowDefinition Height="2*"></RowDefinition>
                         </Grid.RowDefinitions>
-                        <TextBlock  Name="tbSavings" Margin="8"  FontSize="48" TextDecorations="Underline" HorizontalAlignment="Center" FontWeight="ExtraBlack" TextWrapping="Wrap" TextAlignment="Center">SAVINGS</TextBlock>
+                        <TextBlock  Name="tbSavings" Margin="8"  FontSize="48" TextDecorations="Underline" HorizontalAlignment="Center" FontWeight="ExtraBlack" TextWrapping="Wrap" TextAlignment="Center" Foreground="{StaticResource PrimaryHueMidBrush}">SAVINGS</TextBlock>
 
                         <StackPanel Grid.Row="1">
                             <TextBlock x:Name="tbSavingsAmount" HorizontalAlignment="Center" Margin="14" >Amount to Save</TextBlock>
                             <metro:NumericUpDown ValueChanged="nudSavingsAmount_ValueChanged" Name="nudSavingsAmount" ></metro:NumericUpDown>
+                            <TextBlock Name="tbSubmitSavingsAmount" Visibility="Collapsed" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
 
                         <StackPanel Grid.Row="2">
                             <TextBlock  x:Name="tbSavingsInterestRate" HorizontalAlignment="Center" Margin="14" >Interest Rate</TextBlock>
                             <metro:NumericUpDown ValueChanged="nudSavingsInterestRate_ValueChanged" Name="nudSavingsInterestRate" StringFormat="P" Maximum="1"></metro:NumericUpDown>
+                            <TextBlock Name="tbSubmitSavingsInterestRate" Visibility="Collapsed" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
 
                         <StackPanel Grid.Row="3">
                             <TextBlock  x:Name="tbSavingsDateToSave" HorizontalAlignment="Center" Margin="14" >Date to Save</TextBlock>
                             <DatePicker Name="dateSavings" Width="350" SelectedDateChanged="dateSavings_SelectedDateChanged"></DatePicker>
+                            <TextBlock  Name="tbSubmitSavingsDate" Visibility="Collapsed" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
 
                         <StackPanel Grid.Row="4">
                             <TextBlock Name="tbSavingsReason"  HorizontalAlignment="Center" Margin="14">Reason for Savings</TextBlock>
                             <TextBox  TextChanged="txbSavingsReason_TextChanged" Name="txbSavingsReason" TextWrapping="Wrap" AcceptsReturn="True" SpellCheck.IsEnabled="True" Style="{StaticResource MaterialDesignOutlinedTextBox}" Width="350" Height="100" FontSize="16"></TextBox>
+                            <TextBlock Name="tbSubmitSavingsReason" Visibility="Collapsed" TextWrapping="Wrap" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
 
                         <Button Name="btnSavings" Click="btnSavings_Click" Grid.Row="5" Width="250" Margin="18" FontSize="28" Height="55"  materialDesign:ButtonAssist.CornerRadius="20">SUBMIT</Button>
@@ -167,7 +171,7 @@
                             <RowDefinition Height="2*"></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <TextBlock  Name="tbHousing" Margin="8"  FontSize="48" TextDecorations="Underline" HorizontalAlignment="Center" FontWeight="ExtraBlack" TextWrapping="Wrap" TextAlignment="Center">HOUSING</TextBlock>
+                        <TextBlock  Name="tbHousing" Margin="8"  FontSize="48" TextDecorations="Underline" HorizontalAlignment="Center" FontWeight="ExtraBlack" TextWrapping="Wrap" TextAlignment="Center" Foreground="{StaticResource PrimaryHueMidBrush}">HOUSING</TextBlock>
 
                         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" >
                             <ToggleButton Click="tgRent_Click" Name="tgRent"  Style="{StaticResource MaterialDesignActionToggleButton}"  Margin="5" Width="64" Height="64">Rent</ToggleButton>
@@ -177,6 +181,7 @@
                         <StackPanel Name="pnlRenting"  Grid.Row="2" Grid.RowSpan="5" Visibility="Collapsed">
                             <TextBlock  x:Name="tbRenting" HorizontalAlignment="Center" Margin="14" >Monthly Rent</TextBlock>
                             <metro:NumericUpDown Name="nudRent" ValueChanged="nudRent_ValueChanged"></metro:NumericUpDown>
+                            <TextBlock Name="tbSubmitRent" Visibility="Collapsed" HorizontalAlignment="Center"></TextBlock>
                             <Button Name="btnRent" Click="btnRent_Click" FontSize="28" Height="55" materialDesign:ButtonAssist.CornerRadius="20" Width="250" Margin="18">SUBMIT</Button>
                         </StackPanel>
 
@@ -184,21 +189,25 @@
                             <StackPanel>
                                 <TextBlock x:Name="tbPropertyPrice" HorizontalAlignment="Center" Margin="14" >Property Price</TextBlock>
                                 <metro:NumericUpDown Name="nudPropertyPrice" ValueChanged="nudPropertyPrice_ValueChanged"></metro:NumericUpDown>
+                                <TextBlock Name="tbSubmitPropertyPrice" HorizontalAlignment="Center" Visibility="Collapsed"></TextBlock>
                             </StackPanel>
 
                             <StackPanel>
                                 <TextBlock x:Name="tbTotalDeposit" HorizontalAlignment="Center" Margin="14" >Total Deposit</TextBlock>
                                 <metro:NumericUpDown Name="nudTotalDeposit" ValueChanged="nudTotalDeposit_ValueChanged"></metro:NumericUpDown>
+                                <TextBlock Name="tbSubmitTotalDeposit" HorizontalAlignment="Center" Visibility="Collapsed"></TextBlock>
                             </StackPanel>
 
                             <StackPanel>
                                 <TextBlock x:Name="tbPropertyInterestRate" HorizontalAlignment="Center" Margin="14" >Interest Rate</TextBlock>
                                 <metro:NumericUpDown Name="nudPropertyInterestRate" StringFormat="P" Maximum="1" ValueChanged="nudPropertyInterestRate_ValueChanged"></metro:NumericUpDown>
+                                <TextBlock Name="tbSubmitPropertyInterestRate" HorizontalAlignment="Center" Visibility="Collapsed"></TextBlock>
                             </StackPanel>
 
                             <StackPanel>
                                 <TextBlock x:Name="tbPropertyMonths" HorizontalAlignment="Center" Margin="14" >Months to Repay</TextBlock>
-                                <metro:NumericUpDown Name="nudPropertyMonths" ValueChanged="nudPropertyMonths_ValueChanged"></metro:NumericUpDown>
+                                <metro:NumericUpDown Name="nudPropertyMonths" Minimum="240" Maximum="360" ValueChanged="nudPropertyMonths_ValueChanged" StringFormat="G"></metro:NumericUpDown>
+                                <TextBlock Name="tbSubmitPropertyMonths" HorizontalAlignment="Center" Visibility="Collapsed"></TextBlock>
                             </StackPanel>
 
                             <Button Name="btnHomeLoan" Click="btnHomeLoan_Click" Width="250" Margin="18" Height="55" FontSize="28" materialDesign:ButtonAssist.CornerRadius="20">SUBMIT</Button>
