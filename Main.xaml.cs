@@ -37,9 +37,15 @@ namespace ST10083941_PROG6221_Task_3
                     CollapseExpensePanels();
                     pnlMonthlyExpenses.Visibility = Visibility.Visible;
                     break;
+               
                 case 2:
                     CollapseExpensePanels();
                     pnlVehicle.Visibility = Visibility.Visible;
+                    break;
+                
+                case 3:
+                    CollapseExpensePanels();
+                    gridSavings.Visibility = Visibility.Visible;
                     break;
                 default:
                     break;
@@ -51,30 +57,31 @@ namespace ST10083941_PROG6221_Task_3
         {
             pnlMonthlyExpenses.Visibility = Visibility.Collapsed;
             pnlVehicle.Visibility = Visibility.Collapsed;
+            gridSavings.Visibility = Visibility.Collapsed;
         }
 
         //Submit button for the vehicle expense.
         private void btnSubmitVehicle_Click(object sender, RoutedEventArgs e)
         {
-            List<NumericUpDown> VehicleNud = new List<NumericUpDown>();
-            VehicleNud.Add(nudVehicleDeposit);
-            VehicleNud.Add(nudVehicleInsurancePremium);
-            VehicleNud.Add(nudVehicleInterestRate);
-            VehicleNud.Add(nudVehiclePrice);
+            List<NumericUpDown> lstVehicleNUD = new List<NumericUpDown>();
+            lstVehicleNUD.Add(nudVehicleDeposit);
+            lstVehicleNUD.Add(nudVehicleInsurancePremium);
+            lstVehicleNUD.Add(nudVehicleInterestRate);
+            lstVehicleNUD.Add(nudVehiclePrice);
 
-            List<TextBlock> VehicleTb = new List<TextBlock>();
-            VehicleTb.Add(tbVehicleDeposit);
-            VehicleTb.Add(tbVehicleInsurancePremium);
-            VehicleTb.Add(tbVehicleInterestRate);
-            VehicleTb.Add(tbVehiclePrice);
+            List<TextBlock> lstVehicleTB = new List<TextBlock>();
+            lstVehicleTB.Add(tbVehicleDeposit);
+            lstVehicleTB.Add(tbVehicleInsurancePremium);
+            lstVehicleTB.Add(tbVehicleInterestRate);
+            lstVehicleTB.Add(tbVehiclePrice);
             bool bValidate = true;
             
-            for (int i = 0; i < VehicleNud.Count; i++)
+            for (int i = 0; i < lstVehicleNUD.Count; i++)
             {
 
-                if (VehicleNud[i].Value == null)
+                if (lstVehicleNUD[i].Value == null)
                 {
-                    ValidateNumericUpDown(VehicleNud[i], VehicleTb[i]);
+                    ValidateNumericUpDown(lstVehicleNUD[i], lstVehicleTB[i]);
                     bValidate = false;
                 }
             }
@@ -82,7 +89,7 @@ namespace ST10083941_PROG6221_Task_3
             if (bValidate == true)
             {
                 MessageBox.Show("Expense added.");
-                ClearNUD(VehicleNud, VehicleTb);
+                ClearNUD(lstVehicleNUD, lstVehicleTB);
             }
 
 
@@ -139,16 +146,16 @@ namespace ST10083941_PROG6221_Task_3
         //Submit button for monthly expenses which validate the input before accepting it.
         private void btnMonthlyExpenses_Click(object sender, RoutedEventArgs e)
         {
-            List<NumericUpDown> MonthlyExpensesNUD = new List<NumericUpDown> { nudGroceries, nudUtilities, nudTravel, nudPhoneExpenses, nudOther };
-            List<TextBlock> MonthlyExpensesTb = new List<TextBlock> { tbGroceries, tbUtilities, tbTravelCosts, tbPhoneExpenses, tbOtherExpenses };
+            List<NumericUpDown> lstMonthlyExpensesNUD = new List<NumericUpDown> { nudGroceries, nudUtilities, nudTravel, nudPhoneExpenses, nudOther };
+            List<TextBlock> lstMonthlyExpensesTB = new List<TextBlock> { tbGroceries, tbUtilities, tbTravelCosts, tbPhoneExpenses, tbOtherExpenses };
 
             bool bValidate = true;
 
-            for (int i = 0; i < MonthlyExpensesNUD.Count; i++)
+            for (int i = 0; i < lstMonthlyExpensesNUD.Count; i++)
             {
-                if (MonthlyExpensesNUD[i].Value == null)
+                if (lstMonthlyExpensesNUD[i].Value == null)
                 {
-                    ValidateNumericUpDown(MonthlyExpensesNUD[i], MonthlyExpensesTb[i]);
+                    ValidateNumericUpDown(lstMonthlyExpensesNUD[i], lstMonthlyExpensesTB[i]);
                     bValidate = false;
                 }
             }
@@ -156,7 +163,7 @@ namespace ST10083941_PROG6221_Task_3
             if (bValidate == true)
             {
                 MessageBox.Show("Expense added.");
-                ClearNUD(MonthlyExpensesNUD, MonthlyExpensesTb);
+                ClearNUD(lstMonthlyExpensesNUD, lstMonthlyExpensesTB);
             }
         }
 
@@ -184,6 +191,121 @@ namespace ST10083941_PROG6221_Task_3
         private void nudOther_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
             ValidateValueChangedNUD(nudOther, tbOtherExpenses);
+        }
+
+        //Savings submit button. Validates each input field and displays corresponding error.
+        private void btnSavings_Click(object sender, RoutedEventArgs e)
+        {
+            List<NumericUpDown> lstSavingsNUD = new List<NumericUpDown> { nudSavingsAmount, nudSavingsInterestRate };
+            List<TextBlock> lstSavingsTB = new List<TextBlock> { tbSavingsAmount, tbSavingsInterestRate };
+            bool bValid = true;
+
+            for (int i = 0; i < lstSavingsNUD.Count; i++)
+            {
+                if (lstSavingsNUD[i].Value == null)
+                {
+                    ValidateNumericUpDown(lstSavingsNUD[i], lstSavingsTB[i]);
+                    bValid = false;
+                }
+            }
+
+            if (dateSavings.SelectedDate == null)
+            {
+                bValid = false;
+                MaterialDesignThemes.Wpf.HintAssist.SetHelperText(dateSavings, "You cannot leave the date empty!");
+                tbSavingsDateToSave.Foreground = Brushes.Red;
+            }
+
+            if (txbSavingsReason.Text.Length <= 0)
+            {
+                bValid = false;
+                MaterialDesignThemes.Wpf.HintAssist.SetHelperText(txbSavingsReason, "You cannot leave the reason empty!");
+                tbSavingsReason.Foreground = Brushes.Red;
+            }
+
+            if (bValid == true)
+            {
+                MessageBox.Show("Expense added.");
+            }
+        }
+
+        //Value on change for the Savings tab to either clear or show error regarding input.
+        private void nudSavingsAmount_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudSavingsAmount, tbSavingsAmount);
+        }
+
+        private void nudSavingsInterestRate_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudSavingsInterestRate, tbSavingsInterestRate);
+        }
+
+        private void dateSavings_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MaterialDesignThemes.Wpf.HintAssist.SetHelperText(dateSavings, null);
+            tbSavingsDateToSave.Foreground = dateSavings.SelectedDate != null ? Brushes.Green : Brushes.Red; 
+        }
+
+        private void txbSavingsReason_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            MaterialDesignThemes.Wpf.HintAssist.SetHelperText(txbSavingsReason, null);
+            tbSavingsReason.Foreground = tbSavingsReason.Text != null ? Brushes.Green : Brushes.Red;
+        }
+
+
+        //Toggle button if user wants to rent.
+        private void tgRent_Click(object sender, RoutedEventArgs e)
+        {
+            if (tgRent.IsChecked == true)
+            {
+                tgLoan.IsEnabled = false;
+                pnlRenting.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                tgLoan.IsEnabled = true;
+                pnlRenting.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        //Toggle button if user wants to take out a loan
+        private void tgLoan_Click(object sender, RoutedEventArgs e)
+        {
+            if (tgLoan.IsChecked == true)
+            {
+                tgRent.IsEnabled = false;
+                pnlLoan.Visibility = Visibility.Visible;
+
+            }
+            else
+            {
+                tgRent.IsEnabled = true;
+                pnlLoan.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        //Submit button for renting.
+        private void btnRent_Click(object sender, RoutedEventArgs e)
+        {
+            bool bValid = true;
+            if (nudRent.Value == null)
+            {
+                ValidateNumericUpDown(nudRent, tbRenting);
+                bValid = false;
+            }
+
+            if (bValid == true)
+            {
+                MessageBox.Show("Expense added.");
+                tgRent.IsEnabled = false;
+                tgLoan.IsEnabled = false;
+            }
+        }
+
+        //Update the colors of the textbox and helper text for renting fields.
+        private void nudRent_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudRent, tbRenting);
         }
     }
 }
