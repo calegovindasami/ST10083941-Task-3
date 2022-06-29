@@ -25,6 +25,7 @@ namespace ST10083941_PROG6221_Task_3
         public Main()
         {
             InitializeComponent();
+            cmbExpenses.SelectedIndex = 0;
         }
 
         //Changes the form based on what the user selects from the combo box in the expense tab.
@@ -276,6 +277,15 @@ namespace ST10083941_PROG6221_Task_3
                 tbSavingsReason.Foreground = Brushes.Red;
             }
 
+            DateTime selectedDate = dateSavings.SelectedDate.Value;
+            DateTime currentDate = DateTime.Now;
+            if (selectedDate < currentDate)
+            {
+                bValid = false;
+                MaterialDesignThemes.Wpf.HintAssist.SetHelperText(dateSavings, "You cannot select a previous/current date.");
+                tbSavingsDateToSave.Foreground = Brushes.Red;
+            }
+
             if (bValid == true)
             {
                 SubmitExpenseDetails(lstSavingsNUD, lstSubmitSavings);
@@ -307,7 +317,8 @@ namespace ST10083941_PROG6221_Task_3
         private void dateSavings_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             MaterialDesignThemes.Wpf.HintAssist.SetHelperText(dateSavings, null);
-            tbSavingsDateToSave.Foreground = dateSavings.SelectedDate != null ? Brushes.Green : Brushes.Red; 
+            tbSavingsDateToSave.Foreground = dateSavings.SelectedDate != null ? Brushes.Green : Brushes.Red;
+            tbSavingsDateToSave.Foreground = dateSavings.SelectedDate < DateTime.Now ? Brushes.Red : Brushes.Green;
         }
 
         private void txbSavingsReason_TextChanged(object sender, TextChangedEventArgs e)
@@ -406,6 +417,7 @@ namespace ST10083941_PROG6221_Task_3
         private void nudPropertyPrice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
             ValidateValueChangedNUD(nudPropertyPrice, tbPropertyPrice);
+            nudTotalDeposit.Maximum = (double)nudPropertyPrice.Value;
         }
 
         private void nudTotalDeposit_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
