@@ -622,12 +622,15 @@ namespace ST10083941_PROG6221_Task_3
             AscendingOrder();
         }
 
+        //Sorts the list in ascending order and assigns it to the ListView item source.
         public void AscendingOrder()
         {
             List<Expenses> AscendingExpenses = expense.OrderBy(bill => bill.Cost).ToList();
             lvExpenses.ItemsSource = AscendingExpenses;
             lvExpenses.Items.Refresh();
         }
+
+        //Sorts the list in descending order and assigns it to the ListView item source.
         public void DescendingOrder()
         {
             List<Expenses> DescendingExpenses = expense.OrderByDescending(bill => bill.Cost).ToList();
@@ -638,6 +641,72 @@ namespace ST10083941_PROG6221_Task_3
         private void btnDescending_Click(object sender, RoutedEventArgs e)
         {
             DescendingOrder();
+        }
+
+        private void btnSubmitPerson_Click(object sender, RoutedEventArgs e)
+        {
+            List<NumericUpDown> personNUD = new List<NumericUpDown> { nudPersonIncome, nudPersonTax };
+            List<TextBlock> personNameTB = new List<TextBlock> { tbPersonIncome, tbPersonTax };
+            List<TextBlock> submitPersonTB = new List<TextBlock> { tbSubmitPersonIncome, tbSubmitPersonTax };
+            bool bValid = true;
+
+            for (int i = 0; i < personNUD.Count; i++)
+            {
+                if (personNUD[i].Value == null)
+                {
+                    ValidateNumericUpDown(personNUD[i], personNameTB[i]);
+                    bValid = false;
+                }
+            }
+
+            if (txbPersonName.Text.Length <= 0)
+            {
+                bValid = false;
+                MaterialDesignThemes.Wpf.HintAssist.SetHelperText(txbPersonName, "You cannot leave your name empty!");
+                tbPersonName.Foreground = Brushes.Red;
+            }
+
+            if (bValid == true)
+            {
+                //Creates tax object and adds it to the expense list.
+                Tax tax = new Tax("Tax");
+                tax.SetCost(Math.Round((double)nudPersonTax.Value));
+                expense.Add(tax);
+
+                //Configures display to show the persons details.
+                SubmitExpenseDetails(personNUD, submitPersonTB);
+                tbPersonName.Foreground = Brushes.Black;
+                tbSubmitPersonName.Text = txbPersonName.Text;
+                tbSubmitPersonName.Foreground = Brushes.Black;
+                tbSubmitPersonIncome.Foreground = Brushes.Green;
+                tbPersonTax.Foreground = Brushes.Red;
+                txbPersonName.Visibility = Visibility.Collapsed;
+                tbSubmitPersonName.Visibility = Visibility.Visible;
+                btnSubmitPerson.Visibility = Visibility.Collapsed;
+                DescendingOrder();
+                CalculateBalance();
+                CalculateExpenseTotal();
+            }
+        }
+
+        private void txbPersonName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            MaterialDesignThemes.Wpf.HintAssist.SetHelperText(txbPersonName, null);
+            tbPersonName.Foreground = tbPersonName.Text != null ? Brushes.Green : Brushes.Red;
+        }
+
+        private void nudPersonIncome_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudPersonIncome, tbPersonIncome);
+            if (nudPersonIncome.Value != null)
+            {
+                nudPersonTax.Maximum = (double)nudPersonIncome.Value;
+            }
+        }
+
+        private void nudPersonTax_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
+        {
+            ValidateValueChangedNUD(nudPersonTax, tbPersonTax);
         }
     }
 }
