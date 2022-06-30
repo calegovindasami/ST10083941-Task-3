@@ -34,7 +34,6 @@ namespace ST10083941_PROG6221_Task_3.Classes
             int numberOfMonths = ((DateToSaveBy.Year - currentDate.Year) * 12) + DateToSaveBy.Month - currentDate.Month;
             double monthlySavingsBeforeInterest = SavingsAmount / numberOfMonths;
             double monthlySavingsAfterInterest = monthlySavingsBeforeInterest - (monthlySavingsBeforeInterest * InterestRate);
-            MessageBox.Show(Convert.ToString(monthlySavingsBeforeInterest));
             return monthlySavingsAfterInterest;
         }
 

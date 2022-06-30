@@ -265,7 +265,7 @@
                         <StackPanel>
                             <TextBlock Name="tbDisplayExpenseTotalHeader" Foreground="White" FontSize="24" Margin="20">TOTAL EXPENSES:</TextBlock>
                             <TextBlock Name="tbDisplayExpenseTotal" Foreground="White" FontSize="32" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TotalExpense, StringFormat={}{0:C2}}" ></TextBlock>
-                            <TextBlock Visibility="Collapsed" Name="tbExpensesExceed" FontSize="16" Foreground="White">Expenses exceed 75% of your income!</TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Visibility="Collapsed" Name="tbExpensesExceed" FontSize="16" Foreground="White">Expenses exceed 75% of your income!</TextBlock>
                         </StackPanel>
                     </materialDesign:Card>
 

@@ -226,14 +226,12 @@ namespace ST10083941_PROG6221_Task_3
 
             if (bValidate == true)
             {
-                MessageBox.Show("Expense added.");
 
                 //Creates Vehicle object and assigns the values required to calculate monthly repayment. Then adds it to the expense List and refreshes the List View.
                 Vehicle vehicle = new Vehicle("Vehicle");
                 vehicle.SetProperties( txbModel.Text, (double) nudVehiclePrice.Value, (double)nudVehicleDeposit.Value, (double)nudVehicleInterestRate.Value, (double)nudVehicleInsurancePremium.Value );
                 double monthlyCost = vehicle.CalculateRepayment();
                 vehicle.SetCost(Math.Round(monthlyCost, 2));
-                MessageBox.Show(Convert.ToString(vehicle.Cost));
                 expense.Add(vehicle);
                 DescendingOrder();
                 CalculateBalance();
@@ -477,7 +475,6 @@ namespace ST10083941_PROG6221_Task_3
                 tbSubmitSavingsDate.Foreground = Brushes.Red;
                 dateSavings.Visibility = Visibility.Collapsed;
                 tbSubmitSavingsDate.Visibility = Visibility.Visible;
-                MessageBox.Show("Expense added.");
             }
         }
 
@@ -615,7 +612,7 @@ namespace ST10083941_PROG6221_Task_3
         //Displays popup message if expenses exceed 75% of income.
         public void HomeLoanWarning(double loan)
         {
-            if (loan > (Income * 0.75))
+            if (loan > (Income * 0.25))
             {
                 tbHomeLoanWarning.Visibility = Visibility.Visible;
             }
