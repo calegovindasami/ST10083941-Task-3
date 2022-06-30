@@ -219,7 +219,7 @@
             <TabItem Header="View Expenses" Name="tiViewExpenses" >
                 <Grid>
 
-                    <materialDesign:Card Name="cdIncome" materialDesign:ShadowAssist.ShadowDepth="Depth5"  materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" Width="350" Height="150" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="16">
+                    <materialDesign:Card Name="cdBalance" materialDesign:ShadowAssist.ShadowDepth="Depth5"  materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" Width="350" Height="150" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="16">
                         <materialDesign:Card.Background>
                             <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                                 <GradientStop Color="#FFBA2BFF" Offset="1"/>
@@ -229,6 +229,19 @@
                         <StackPanel>
                             <TextBlock Name="tbDisplayIncomeHeader" Foreground="White" FontSize="24" Margin="20">BALANCE:</TextBlock>
                             <TextBlock Name="tbDisplayIncome" Foreground="White" FontSize="32" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Balance, StringFormat={}{0:C2}}" ></TextBlock>
+                        </StackPanel>
+                    </materialDesign:Card>
+
+                    <materialDesign:Card Name="cdExpenses" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="16" materialDesign:ShadowAssist.ShadowDepth="Depth5"  materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" Width="350" Height="150" >
+                        <materialDesign:Card.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                <GradientStop Color="#FFD100FF"/>
+                                <GradientStop Color="#FFF04535" Offset="1"/>
+                            </LinearGradientBrush>
+                        </materialDesign:Card.Background>
+                        <StackPanel>
+                            <TextBlock Name="tbDisplayExpenseTotalHeader" Foreground="White" FontSize="24" Margin="20">TOTAL EXPENSES:</TextBlock>
+                            <TextBlock Name="tbDisplayExpenseTotal" Foreground="White" FontSize="32" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TotalExpense, StringFormat={}{0:C2}}" ></TextBlock>
                         </StackPanel>
                     </materialDesign:Card>
 

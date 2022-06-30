@@ -28,6 +28,7 @@ namespace ST10083941_PROG6221_Task_3
     {
         //TEMP INCOME
         public double Balance { get; set; }
+        public double ExpenseTotal { get; set; }
         double income = 20000;
 
 
@@ -99,7 +100,7 @@ namespace ST10083941_PROG6221_Task_3
             DataContext = this;
         }
 
-
+        //Calculates balance and binds it to the corresponding textblock.
         public void CalculateBalance()
         {
             Balance = income - expense.Sum(exp => exp.Cost);
@@ -107,7 +108,16 @@ namespace ST10083941_PROG6221_Task_3
             bind.Source = Balance;
             bind.StringFormat = "{0:C2}";
             tbDisplayIncome.SetBinding(TextBlock.TextProperty, bind);
-            MessageBox.Show(Convert.ToString(Balance));
+        }
+
+        //Calculates expense total and binds it to the textblock.
+        public void CalculateExpenseTotal()
+        {
+            ExpenseTotal = expense.Sum(exp => exp.Cost);
+            Binding bind = new Binding();
+            bind.Source = ExpenseTotal;
+            bind.StringFormat = "{0:C2}";
+            tbDisplayExpenseTotal.SetBinding(TextBlock.TextProperty, bind);
         }
 
 
@@ -210,6 +220,7 @@ namespace ST10083941_PROG6221_Task_3
                 expense.Add(vehicle);
                 DescendingOrder();
                 CalculateBalance();
+                CalculateExpenseTotal();
 
                 //Displays expenses and changes visiblity of controls.
                 SubmitExpenseDetails(lstVehicleNUD, lstVehicleSubmit);
@@ -344,6 +355,7 @@ namespace ST10083941_PROG6221_Task_3
                 expense.Add(other);
                 DescendingOrder();
                 CalculateBalance();
+                CalculateExpenseTotal();
 
                 //Changes control properties to display expenses.
                 btnMonthlyExpenses.Visibility = Visibility.Collapsed;
@@ -426,6 +438,7 @@ namespace ST10083941_PROG6221_Task_3
                 expense.Add(saving);
                 DescendingOrder();
                 CalculateBalance();
+                CalculateExpenseTotal();
 
                 //Changes display options to display expenses.
                 SubmitExpenseDetails(lstSavingsNUD, lstSubmitSavings);
@@ -517,6 +530,7 @@ namespace ST10083941_PROG6221_Task_3
                 expense.Add(rent);
                 DescendingOrder();
                 CalculateBalance();
+                CalculateExpenseTotal();
 
                 //Configures control visbility to show the rent expense.
                 tbSubmitRent.Text = String.Format("{0:C2}", nudRent.Value);
@@ -560,6 +574,7 @@ namespace ST10083941_PROG6221_Task_3
                 expense.Add(homeLoan);
                 DescendingOrder();
                 CalculateBalance();
+                CalculateExpenseTotal();
 
                 //Changes components visibility to display the expenses.
                 SubmitExpenseDetails(lstHomeLoanNUD, lstSubmitHomeLoan);
