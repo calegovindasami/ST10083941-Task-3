@@ -34,7 +34,7 @@ namespace ST10083941_PROG6221_Task_3.Classes
         public double CalculateRepayment()
         {
             double loanAmount = PurchasePrice - TotalDeposit;
-            double totalAmount = loanAmount + (loanAmount * (InterestRate / 100));
+            double totalAmount = loanAmount + (loanAmount * InterestRate);
             double monthlyCost = totalAmount / 60;
             double totalExpenses = monthlyCost + InsurancePremium;
             return totalExpenses;

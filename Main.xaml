@@ -69,7 +69,7 @@
                         <TextBlock Name="tbPersonTax" HorizontalAlignment="Center" FontSize="32">Tax</TextBlock>
                         <metro:NumericUpDown Name="nudPersonTax" ValueChanged="nudPersonTax_ValueChanged"></metro:NumericUpDown>
                         <TextBlock Name="tbSubmitPersonTax" Visibility="Collapsed" HorizontalAlignment="Center" FontSize="24"></TextBlock>
-                        
+
                     </StackPanel>
 
                     <Button Name="btnSubmitPerson" Click="btnSubmitPerson_Click" Grid.Row="4" Width="350" materialDesign:ButtonAssist.CornerRadius="20" Height="55" FontSize="32">SUBMIT</Button>
@@ -313,5 +313,14 @@
 
         </TabControl>
 
+        <materialDesign:DialogHost Name="dlogAlert" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center" Width="450" Height="250" DialogTheme="Light" Panel.ZIndex="1000">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Width="450" Height="250" >
+                    <TextBlock FontSize="48" Margin="10" Foreground="Red" TextDecorations="Underline" FontWeight="Bold" HorizontalAlignment="Center">WARNING</TextBlock>
+                    <TextBlock FontSize="32" TextWrapping="Wrap" Margin="10" TextAlignment="Center">Your expenses exceed 75% of your income!</TextBlock>
+                    <Button Name="btnCloseAlert" Click="btnCloseAlert_Click" Margin="10" Width="150" FontSize="24" Height="40" FontWeight="Bold">CLOSE</Button>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
     </Grid>
 </metro:MetroWindow>

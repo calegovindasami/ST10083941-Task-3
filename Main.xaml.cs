@@ -29,28 +29,12 @@ namespace ST10083941_PROG6221_Task_3
         //TEMP INCOME
         public double Balance { get; set; }
         public double ExpenseTotal { get; set; }
-        double income = 20000;
+        public double Income { get; set; }
 
 
 
         //List of each expense object
         List<Expenses> expense = new List<Expenses>();
-
-        //Constants to keep track of the position of each object within the list.
-        const int GROCERIES = 0;
-        const int HOMELOAN = 1;
-        const int OTHER = 2;
-        const int PHONEBILL = 3;
-        const int RENT = 4;
-        const int TAX = 5;
-        const int TRAVEL = 6;
-        const int UTILITY = 7;
-        const int VEHICLE = 8;
-
-        //Colection view to manipulate order of expenses.
-        CollectionView view;
-
-
         //Formatter for the Y-Axis of the line chart.
         public Func<double, string> YFormatter { get; set; }
 
@@ -96,24 +80,35 @@ namespace ST10083941_PROG6221_Task_3
             //Formats the Y-Axis to currency.
             YFormatter = value => value.ToString("C2");
             lvExpenses.ItemsSource = expense;
-            view = (CollectionView)CollectionViewSource.GetDefaultView(lvExpenses.ItemsSource);
             DataContext = this;
         }
 
         //Calculates balance and binds it to the corresponding textblock.
         public void CalculateBalance()
         {
-            Balance = income - expense.Sum(exp => exp.Cost);
+            Balance = Income - expense.Sum(exp => exp.Cost);
             Binding bind = new Binding();
             bind.Source = Balance;
             bind.StringFormat = "{0:C2}";
             tbDisplayIncome.SetBinding(TextBlock.TextProperty, bind);
         }
 
+        //Delegate 
+        public delegate void ExpenseExceeds(double total);
+
+        public void ExceedsPercentage(double total)
+        {
+            if (total > (0.75 * Income))
+            {
+                dlogAlert.IsOpen = true;
+            }
+        }
+
         //Calculates expense total and binds it to the textblock.
-        public void CalculateExpenseTotal()
+        public void CalculateExpenseTotal(ExpenseExceeds ExceedsPercentage)
         {
             ExpenseTotal = expense.Sum(exp => exp.Cost);
+            ExceedsPercentage(ExpenseTotal);
             Binding bind = new Binding();
             bind.Source = ExpenseTotal;
             bind.StringFormat = "{0:C2}";
@@ -220,7 +215,7 @@ namespace ST10083941_PROG6221_Task_3
                 expense.Add(vehicle);
                 DescendingOrder();
                 CalculateBalance();
-                CalculateExpenseTotal();
+                CalculateExpenseTotal(ExceedsPercentage);
 
                 //Displays expenses and changes visiblity of controls.
                 SubmitExpenseDetails(lstVehicleNUD, lstVehicleSubmit);
@@ -355,7 +350,7 @@ namespace ST10083941_PROG6221_Task_3
                 expense.Add(other);
                 DescendingOrder();
                 CalculateBalance();
-                CalculateExpenseTotal();
+                CalculateExpenseTotal(ExceedsPercentage);
 
                 //Changes control properties to display expenses.
                 btnMonthlyExpenses.Visibility = Visibility.Collapsed;
@@ -438,7 +433,7 @@ namespace ST10083941_PROG6221_Task_3
                 expense.Add(saving);
                 DescendingOrder();
                 CalculateBalance();
-                CalculateExpenseTotal();
+                CalculateExpenseTotal(ExceedsPercentage);
 
                 //Changes display options to display expenses.
                 SubmitExpenseDetails(lstSavingsNUD, lstSubmitSavings);
@@ -530,7 +525,7 @@ namespace ST10083941_PROG6221_Task_3
                 expense.Add(rent);
                 DescendingOrder();
                 CalculateBalance();
-                CalculateExpenseTotal();
+                CalculateExpenseTotal(ExceedsPercentage);
 
                 //Configures control visbility to show the rent expense.
                 tbSubmitRent.Text = String.Format("{0:C2}", nudRent.Value);
@@ -568,13 +563,13 @@ namespace ST10083941_PROG6221_Task_3
             {
                 //Creates home loan object, calculates monthly loan payment and adds it to the expense list.
                 HomeLoan homeLoan = new HomeLoan("Home Loan");
-                homeLoan.SetProperties((double)nudPropertyPrice.Value, (double)nudTotalDeposit.Value, (double)nudPropertyInterestRate.Value ,(int)nudPropertyMonths.Value, income);
+                homeLoan.SetProperties((double)nudPropertyPrice.Value, (double)nudTotalDeposit.Value, (double)nudPropertyInterestRate.Value ,(int)nudPropertyMonths.Value, Income);
                 double monthlyLoanCost = homeLoan.CalculateCost(HomeLoanWarning);
                 homeLoan.SetCost(Math.Round(monthlyLoanCost, 2));
                 expense.Add(homeLoan);
                 DescendingOrder();
                 CalculateBalance();
-                CalculateExpenseTotal();
+                CalculateExpenseTotal(ExceedsPercentage);
 
                 //Changes components visibility to display the expenses.
                 SubmitExpenseDetails(lstHomeLoanNUD, lstSubmitHomeLoan);
@@ -586,7 +581,7 @@ namespace ST10083941_PROG6221_Task_3
 
         public void HomeLoanWarning(double loan)
         {
-            if (loan > (income * 0.75))
+            if (loan > (Income * 0.75))
             {
                 tbHomeLoanWarning.Visibility = Visibility.Visible;
             }
@@ -673,6 +668,8 @@ namespace ST10083941_PROG6221_Task_3
                 tax.SetCost(Math.Round((double)nudPersonTax.Value));
                 expense.Add(tax);
 
+                Income = (double)nudPersonIncome.Value;
+
                 //Configures display to show the persons details.
                 SubmitExpenseDetails(personNUD, submitPersonTB);
                 tbPersonName.Foreground = Brushes.Black;
@@ -685,7 +682,7 @@ namespace ST10083941_PROG6221_Task_3
                 btnSubmitPerson.Visibility = Visibility.Collapsed;
                 DescendingOrder();
                 CalculateBalance();
-                CalculateExpenseTotal();
+                CalculateExpenseTotal(ExceedsPercentage);
             }
         }
 
@@ -707,6 +704,11 @@ namespace ST10083941_PROG6221_Task_3
         private void nudPersonTax_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
             ValidateValueChangedNUD(nudPersonTax, tbPersonTax);
+        }
+
+        private void btnCloseAlert_Click(object sender, RoutedEventArgs e)
+        {
+            dlogAlert.IsOpen = false;
         }
     }
 }

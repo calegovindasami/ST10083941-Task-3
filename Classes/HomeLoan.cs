@@ -37,7 +37,7 @@ namespace ST10083941_PROG6221_Task_3.Classes
         public double CalculateCost(MonthlyPayment monthlyPayment)
         {
             double loanAmount = PropertyPrice - TotalDeposit;
-            double interest = InterestRate / 100;
+            double interest = InterestRate;
             double monthlyCost = loanAmount * (interest / 12) * Math.Pow(1 + (interest / 12), MonthsToRepay) / (Math.Pow(1 + (interest / 12), MonthsToRepay) - 1);
             monthlyPayment(Math.Round(monthlyCost, 2));
             return Math.Round(monthlyCost, 2);
