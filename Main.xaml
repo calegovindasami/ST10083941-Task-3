@@ -18,7 +18,7 @@
         mc:Ignorable="d"
         Language="en-ZA"
         WindowStartupLocation="CenterScreen"
-        Title="MainWindow" Height="720" Width="1000">
+        Title="ST10083941" Height="720" Width="1000">
     <Window.Resources>
         <Style TargetType="metro:NumericUpDown">
             <Setter Property="HideUpDownButtons" Value="True"/>
