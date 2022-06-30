@@ -78,15 +78,15 @@
                         <TextBlock Name="tbVehicleDeposit" HorizontalAlignment="Center" Margin="14">Total Deposit</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudVehicleDeposit_ValueChanged" Name="nudVehicleDeposit"></metro:NumericUpDown>
                         <TextBlock Visibility="Collapsed" Name="tbSubmitVehicleDeposit"  HorizontalAlignment="Center"></TextBlock>
-                        
+
                         <TextBlock Name="tbVehicleInterestRate" HorizontalAlignment="Center" Margin="14">Interest Rate</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudVehicleInterestRate_ValueChanged" Name="nudVehicleInterestRate" StringFormat="P" Maximum="1"></metro:NumericUpDown>
                         <TextBlock Visibility="Collapsed" Name="tbSubmitVehicleInterestRate"  HorizontalAlignment="Center"></TextBlock>
-                        
+
                         <TextBlock Name="tbVehicleInsurancePremium" HorizontalAlignment="Center" Margin="14">Insurance Premium</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudVehicleInsurancePremium_ValueChanged" Name="nudVehicleInsurancePremium"></metro:NumericUpDown>
                         <TextBlock Visibility="Collapsed" Name="tbSubmitVehicleInsurancePremium"  HorizontalAlignment="Center"></TextBlock>
-                        
+
                         <Button x:Name="btnSubmitVehicle" Click="btnSubmitVehicle_Click" Margin="16" Width="250" FontSize="28" Height="55" materialDesign:ButtonAssist.CornerRadius="20">SUBMIT</Button>
                     </StackPanel>
 
@@ -96,7 +96,7 @@
                         <TextBlock x:Name="tbGroceries" HorizontalAlignment="Center" Margin="14" >Groceries</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudGroceries_ValueChanged" Name="nudGroceries"></metro:NumericUpDown>
                         <TextBlock Name="tbSubmitGroceries" Visibility="Collapsed" HorizontalAlignment="Center"></TextBlock>
-                        
+
                         <TextBlock  Name="tbUtilities" Margin="14" HorizontalAlignment="Center">Utilities</TextBlock>
                         <metro:NumericUpDown ValueChanged="nudUtilities_ValueChanged" Name="nudUtilities"></metro:NumericUpDown>
                         <TextBlock Name="tbSubmitUtilities" Visibility="Collapsed" HorizontalAlignment="Center"></TextBlock>
@@ -218,6 +218,20 @@
             </TabItem>
             <TabItem Header="View Expenses" Name="tiViewExpenses" >
                 <Grid>
+
+                    <materialDesign:Card Name="cdIncome" materialDesign:ShadowAssist.ShadowDepth="Depth5"  materialDesign:ShadowAssist.ShadowEdges="Bottom,Left" Width="350" Height="150" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="16">
+                        <materialDesign:Card.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                <GradientStop Color="#FFBA2BFF" Offset="1"/>
+                                <GradientStop Color="#FFF04747"/>
+                            </LinearGradientBrush>
+                        </materialDesign:Card.Background>
+                        <StackPanel>
+                            <TextBlock Name="tbDisplayIncomeHeader" Foreground="White" FontSize="24" Margin="20">BALANCE:</TextBlock>
+                            <TextBlock Name="tbDisplayIncome" Foreground="White" FontSize="32" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Balance, StringFormat={}{0:C2}}" ></TextBlock>
+                        </StackPanel>
+                    </materialDesign:Card>
+
                     <Button Name="btnAscending" Click="btnAscending_Click" Width="190" Margin="10,250,666,405">Ascending</Button>
                     <Button Name="btnDescending" Click="btnDescending_Click" Width="190" Margin="210,250,466,405">Descending</Button>
                     <ListView Width="400" Height="400" HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="lvExpenses">
@@ -232,21 +246,21 @@
                         </ListView.Style>
                         <ListView.View>
                             <GridView>
-                            <GridViewColumn Header="Expense" Width="180">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Name}" FontSize="16"></TextBlock>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Amount" Width="180" >
-                                <GridViewColumn.CellTemplate >
-                                    <DataTemplate>
-                                        <TextBlock Foreground="Red" Text="{Binding Cost, StringFormat={}{0:C2}}" FontSize="16"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
+                                <GridViewColumn Header="Expense" Width="180">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" FontSize="16"></TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Amount" Width="180" >
+                                    <GridViewColumn.CellTemplate >
+                                        <DataTemplate>
+                                            <TextBlock Foreground="Red" Text="{Binding Cost, StringFormat={}{0:C2}}" FontSize="16"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
                         </ListView.View>
                     </ListView>
 

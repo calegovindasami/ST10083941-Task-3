@@ -27,7 +27,9 @@ namespace ST10083941_PROG6221_Task_3
     public partial class Main : MetroWindow
     {
         //TEMP INCOME
+        public double Balance { get; set; }
         double income = 20000;
+
 
 
         //List of each expense object
@@ -66,6 +68,8 @@ namespace ST10083941_PROG6221_Task_3
             DateTime firstDayNextMonth = DateTime.Now.AddDays(-DateTime.Now.Day + 1).AddMonths(1);
             dateSavings.DisplayDateStart = firstDayNextMonth;
 
+            tbDisplayIncome.DataContext = this;
+
             //SeriesCollection to store Income, Expenses and Account Balance to display on a Line Series.
             SeriesCollection = new SeriesCollection
             {
@@ -93,6 +97,17 @@ namespace ST10083941_PROG6221_Task_3
             lvExpenses.ItemsSource = expense;
             view = (CollectionView)CollectionViewSource.GetDefaultView(lvExpenses.ItemsSource);
             DataContext = this;
+        }
+
+
+        public void CalculateBalance()
+        {
+            Balance = income - expense.Sum(exp => exp.Cost);
+            Binding bind = new Binding();
+            bind.Source = Balance;
+            bind.StringFormat = "{0:C2}";
+            tbDisplayIncome.SetBinding(TextBlock.TextProperty, bind);
+            MessageBox.Show(Convert.ToString(Balance));
         }
 
 
@@ -194,6 +209,7 @@ namespace ST10083941_PROG6221_Task_3
                 MessageBox.Show(Convert.ToString(vehicle.Cost));
                 expense.Add(vehicle);
                 DescendingOrder();
+                CalculateBalance();
 
                 //Displays expenses and changes visiblity of controls.
                 SubmitExpenseDetails(lstVehicleNUD, lstVehicleSubmit);
@@ -327,6 +343,7 @@ namespace ST10083941_PROG6221_Task_3
                 expense.Add(phoneBill);
                 expense.Add(other);
                 DescendingOrder();
+                CalculateBalance();
 
                 //Changes control properties to display expenses.
                 btnMonthlyExpenses.Visibility = Visibility.Collapsed;
@@ -408,6 +425,7 @@ namespace ST10083941_PROG6221_Task_3
                 saving.SetCost(Math.Round(saving.CalculateSavings(), 2));
                 expense.Add(saving);
                 DescendingOrder();
+                CalculateBalance();
 
                 //Changes display options to display expenses.
                 SubmitExpenseDetails(lstSavingsNUD, lstSubmitSavings);
@@ -493,7 +511,14 @@ namespace ST10083941_PROG6221_Task_3
 
             if (bValid == true)
             {
-                MessageBox.Show("Expense added.");
+                //Creates rent object and adds it to the expense list.
+                Rent rent = new Rent("Rent");
+                rent.SetCost((double)nudRent.Value);
+                expense.Add(rent);
+                DescendingOrder();
+                CalculateBalance();
+
+                //Configures control visbility to show the rent expense.
                 tbSubmitRent.Text = String.Format("{0:C2}", nudRent.Value);
                 nudRent.Visibility = Visibility.Collapsed;
                 tbSubmitRent.Visibility = Visibility.Visible;
@@ -534,6 +559,7 @@ namespace ST10083941_PROG6221_Task_3
                 homeLoan.SetCost(Math.Round(monthlyLoanCost, 2));
                 expense.Add(homeLoan);
                 DescendingOrder();
+                CalculateBalance();
 
                 //Changes components visibility to display the expenses.
                 SubmitExpenseDetails(lstHomeLoanNUD, lstSubmitHomeLoan);
