@@ -144,7 +144,7 @@
 
                         <StackPanel Grid.Row="3">
                             <TextBlock  x:Name="tbSavingsDateToSave" HorizontalAlignment="Center" Margin="14" >Date to Save</TextBlock>
-                            <DatePicker Name="dateSavings" Width="350" SelectedDateChanged="dateSavings_SelectedDateChanged"></DatePicker>
+                            <DatePicker Name="dateSavings" Width="350"  SelectedDateChanged="dateSavings_SelectedDateChanged"></DatePicker>
                             <TextBlock  Name="tbSubmitSavingsDate" Visibility="Collapsed" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
 
@@ -239,10 +239,10 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Header="Amount" Width="180">
-                                <GridViewColumn.CellTemplate>
+                            <GridViewColumn Header="Amount" Width="180" >
+                                <GridViewColumn.CellTemplate >
                                     <DataTemplate>
-                                        <TextBlock Foreground="Red" Text="{Binding Cost}" FontSize="16"/>
+                                        <TextBlock Foreground="Red" Text="{Binding Cost, StringFormat={}{0:C2}}" FontSize="16"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

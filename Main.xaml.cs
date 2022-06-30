@@ -62,6 +62,9 @@ namespace ST10083941_PROG6221_Task_3
             cmbExpenses.SelectedIndex = 0;
             Years = GenerateYears();
 
+            //Sets datepicker for savings to the first day of the following month. Prevents user from trying to save within the same month.
+            DateTime firstDayNextMonth = DateTime.Now.AddDays(-DateTime.Now.Day + 1).AddMonths(1);
+            dateSavings.DisplayDateStart = firstDayNextMonth;
 
             //SeriesCollection to store Income, Expenses and Account Balance to display on a Line Series.
             SeriesCollection = new SeriesCollection
@@ -399,7 +402,12 @@ namespace ST10083941_PROG6221_Task_3
 
             if (bValid == true)
             {
-
+                //Creates object and adds it to Expense list after calculations are done.
+                Savings saving = new Savings("Savings");
+                saving.SetProperties((double)nudSavingsAmount.Value, (double)nudSavingsInterestRate.Value, (DateTime)dateSavings.SelectedDate, txbSavingsReason.Text);
+                saving.SetCost(Math.Round(saving.CalculateSavings(), 2));
+                expense.Add(saving);
+                DescendingOrder();
 
                 //Changes display options to display expenses.
                 SubmitExpenseDetails(lstSavingsNUD, lstSubmitSavings);

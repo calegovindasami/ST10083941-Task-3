@@ -110,6 +110,7 @@
     <Compile Include="Classes\Other.cs" />
     <Compile Include="Classes\PhoneBill.cs" />
     <Compile Include="Classes\Rent.cs" />
+    <Compile Include="Classes\Savings.cs" />
     <Compile Include="Classes\Tax.cs" />
     <Compile Include="Classes\Travel.cs" />
     <Compile Include="Classes\Utility.cs" />
