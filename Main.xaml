@@ -40,7 +40,7 @@
                 x:Name="tcPage"
                 Style="{StaticResource MaterialDesignFilledTabControl}"
                 TabStripPlacement="Left">
-            <TabItem Header="Income" HorizontalContentAlignment="Center">
+            <TabItem Name="tiIncome" Header="Income" HorizontalContentAlignment="Center">
                 <Grid Width="800">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -300,7 +300,7 @@
                         </ListView.View>
                     </ListView>
 
-                    <lvc:CartesianChart Hoverable="False" Series="{Binding SeriesCollection}" LegendLocation="Bottom"  x:Name="chartExpenses" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="400" Width="400">
+                    <lvc:CartesianChart Hoverable="False" Series="{Binding SeriesCollection}" LegendLocation="Top"  x:Name="chartExpenses" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="400" Width="400">
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis Title="Sales" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
                         </lvc:CartesianChart.AxisY>

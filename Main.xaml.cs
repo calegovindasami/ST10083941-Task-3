@@ -61,19 +61,19 @@ namespace ST10083941_PROG6221_Task_3
                 new LineSeries
                 {
                     Title = "Income",
-                    Values = new ChartValues<double> {1000, 2500, 5000, 7500, 10000}
+                    Values = new ChartValues<double> {}
                 },
 
                 new LineSeries
                 {
                     Title = "Expenses",
-                    Values = new ChartValues<double> {2000, 4000, 6000, 8000, 12000}
+                    Values = new ChartValues<double> {}
                 },
 
                 new LineSeries
                 {
-                    Title = "Account Balance",
-                    Values = new ChartValues<double> {1000, 1500, 2000, 2000, 3000}
+                    Title = "Balance",
+                    Values = new ChartValues<double> {}
                 }
             };
 
@@ -81,6 +81,26 @@ namespace ST10083941_PROG6221_Task_3
             YFormatter = value => value.ToString("C2");
             lvExpenses.ItemsSource = expense;
             DataContext = this;
+
+            tiExpenses.IsEnabled = false;
+            tiViewExpenses.IsEnabled = false;
+        }
+
+        //Updates the Line series for expense when an expense is added.
+        public void UpdateLineSeries()
+        {
+            SeriesCollection[1].Values.Clear();
+            double yearlyExpenseTotal = ExpenseTotal * 12;
+
+            SeriesCollection[2].Values.Clear();
+            double yearlyBalanceTotal = Balance * 12;
+
+            for (int i = 0; i < 6; i++)
+            {
+                SeriesCollection[1].Values.Add(yearlyExpenseTotal * i);
+                SeriesCollection[2].Values.Add(yearlyBalanceTotal * i);
+            }
+
         }
 
         //Calculates balance and binds it to the corresponding textblock.
@@ -167,7 +187,7 @@ namespace ST10083941_PROG6221_Task_3
             gridHousing.Visibility = Visibility.Collapsed;
         }
 
-        //Submit button for the vehicle expense.
+        //Submit button for the vehicle expense which validates the fields first then adds it if validation passes.
         private void btnSubmitVehicle_Click(object sender, RoutedEventArgs e)
         {
             List<NumericUpDown> lstVehicleNUD = new List<NumericUpDown>();
@@ -216,6 +236,7 @@ namespace ST10083941_PROG6221_Task_3
                 DescendingOrder();
                 CalculateBalance();
                 CalculateExpenseTotal(ExceedsPercentage);
+                UpdateLineSeries();
 
                 //Displays expenses and changes visiblity of controls.
                 SubmitExpenseDetails(lstVehicleNUD, lstVehicleSubmit);
@@ -273,7 +294,7 @@ namespace ST10083941_PROG6221_Task_3
 
         }
 
-        //Clears helper text if Numeric Up Down value is changed.
+        //--------------- Clears helper text if Numeric Up Down value is changed. ------------------------------------
         public void ValidateValueChangedNUD(NumericUpDown nud, TextBlock tb)
         {
             MaterialDesignThemes.Wpf.HintAssist.SetHelperText(nud, null);
@@ -351,6 +372,7 @@ namespace ST10083941_PROG6221_Task_3
                 DescendingOrder();
                 CalculateBalance();
                 CalculateExpenseTotal(ExceedsPercentage);
+                UpdateLineSeries();
 
                 //Changes control properties to display expenses.
                 btnMonthlyExpenses.Visibility = Visibility.Collapsed;
@@ -358,7 +380,7 @@ namespace ST10083941_PROG6221_Task_3
             }
         }
 
-        //Value change events for the Monthly Expense controls to allow validation on value change.
+        //------------- Value change events for the Monthly Expense controls to allow validation on value change. ---------------
         private void nudGroceries_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
             ValidateValueChangedNUD(nudGroceries, tbGroceries);
@@ -434,6 +456,7 @@ namespace ST10083941_PROG6221_Task_3
                 DescendingOrder();
                 CalculateBalance();
                 CalculateExpenseTotal(ExceedsPercentage);
+                UpdateLineSeries();
 
                 //Changes display options to display expenses.
                 SubmitExpenseDetails(lstSavingsNUD, lstSubmitSavings);
@@ -526,6 +549,7 @@ namespace ST10083941_PROG6221_Task_3
                 DescendingOrder();
                 CalculateBalance();
                 CalculateExpenseTotal(ExceedsPercentage);
+                UpdateLineSeries();
 
                 //Configures control visbility to show the rent expense.
                 tbSubmitRent.Text = String.Format("{0:C2}", nudRent.Value);
@@ -570,6 +594,7 @@ namespace ST10083941_PROG6221_Task_3
                 DescendingOrder();
                 CalculateBalance();
                 CalculateExpenseTotal(ExceedsPercentage);
+                UpdateLineSeries();
 
                 //Changes components visibility to display the expenses.
                 SubmitExpenseDetails(lstHomeLoanNUD, lstSubmitHomeLoan);
@@ -587,7 +612,7 @@ namespace ST10083941_PROG6221_Task_3
             }
         }
 
-        //---------Helper text and color configured based on the user input.-------------
+        //------------------ Helper text and color configured based on the user input. ---------------
         private void nudPropertyPrice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
             ValidateValueChangedNUD(nudPropertyPrice, tbPropertyPrice);
@@ -638,6 +663,8 @@ namespace ST10083941_PROG6221_Task_3
             DescendingOrder();
         }
 
+
+        //Button to submit tax and the user initial details when application opens.
         private void btnSubmitPerson_Click(object sender, RoutedEventArgs e)
         {
             List<NumericUpDown> personNUD = new List<NumericUpDown> { nudPersonIncome, nudPersonTax };
@@ -670,6 +697,10 @@ namespace ST10083941_PROG6221_Task_3
 
                 Income = (double)nudPersonIncome.Value;
 
+                //Enables other tabs once the income and tax is added.
+                tiExpenses.IsEnabled = true;
+                tiViewExpenses.IsEnabled = true;
+
                 //Configures display to show the persons details.
                 SubmitExpenseDetails(personNUD, submitPersonTB);
                 tbPersonName.Foreground = Brushes.Black;
@@ -683,9 +714,19 @@ namespace ST10083941_PROG6221_Task_3
                 DescendingOrder();
                 CalculateBalance();
                 CalculateExpenseTotal(ExceedsPercentage);
+                UpdateLineSeries();
+
+                //Generates line series for the income.
+                SeriesCollection[0].Values.Clear();
+                double yearlyIncome = Income * 12;
+                for (int i = 0; i < 6; i++)
+                {
+                    SeriesCollection[0].Values.Add(yearlyIncome * i);
+                }
             }
         }
 
+        //---------------- Removes validation errors that display on update ------------------------- 
         private void txbPersonName_TextChanged(object sender, TextChangedEventArgs e)
         {
             MaterialDesignThemes.Wpf.HintAssist.SetHelperText(txbPersonName, null);
@@ -706,6 +747,8 @@ namespace ST10083941_PROG6221_Task_3
             ValidateValueChangedNUD(nudPersonTax, tbPersonTax);
         }
 
+
+        //Closes the dialog that displays an error when user exceeds 75% of their income.
         private void btnCloseAlert_Click(object sender, RoutedEventArgs e)
         {
             dlogAlert.IsOpen = false;
