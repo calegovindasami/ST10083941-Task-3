@@ -18,6 +18,7 @@ namespace ST10083941_PROG6221_Task_3.Classes
 
         }
 
+        //Sets properties of the Savings class.
         public void SetProperties(double savingsAmount, double interestRate, DateTime dateToSaveBy, string savingsReason)
         {
             SavingsAmount = savingsAmount;

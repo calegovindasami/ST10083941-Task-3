@@ -166,6 +166,7 @@ namespace ST10083941_PROG6221_Task_3
             }
         }
 
+        //Generates the years for the line chart.
         public string[] GenerateYears()
         {
             DateTime currentYear = DateTime.Today;
@@ -215,6 +216,7 @@ namespace ST10083941_PROG6221_Task_3
                 }
             }
 
+            //Validates the field for the textbox of the model.
             if (txbModel.Text.Length <= 0)
             {
                 MaterialDesignThemes.Wpf.HintAssist.SetHelperText(txbModel, "You cannot leave the Model of the car empty!");
@@ -310,7 +312,11 @@ namespace ST10083941_PROG6221_Task_3
         private void nudVehiclePrice_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
         {
             ValidateValueChangedNUD(nudVehiclePrice, tbVehiclePrice);
-            nudVehicleDeposit.Maximum = (double)nudVehiclePrice.Value;
+            //Only changes the NumericUpDown value of the deposit if the input isn't null.
+            if (nudVehiclePrice.Value != null)
+            {
+                nudVehicleDeposit.Maximum = (double)nudVehiclePrice.Value;
+            }
         }
 
         private void nudVehicleDeposit_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> e)
@@ -423,6 +429,7 @@ namespace ST10083941_PROG6221_Task_3
                 }
             }
 
+            //Validates the datepicker values.
             if (dateSavings.SelectedDate == null)
             {
                 bValid = false;
@@ -437,6 +444,7 @@ namespace ST10083941_PROG6221_Task_3
                 tbSavingsReason.Foreground = Brushes.Red;
             }
 
+            //Ensures that the date selected isn't before the current date.
             DateTime selectedDate = dateSavings.SelectedDate.Value;
             DateTime currentDate = DateTime.Now;
             if (selectedDate < currentDate)
@@ -604,6 +612,7 @@ namespace ST10083941_PROG6221_Task_3
             }
         }
 
+        //Displays popup message if expenses exceed 75% of income.
         public void HomeLoanWarning(double loan)
         {
             if (loan > (Income * 0.75))
@@ -752,6 +761,7 @@ namespace ST10083941_PROG6221_Task_3
         private void btnCloseAlert_Click(object sender, RoutedEventArgs e)
         {
             dlogAlert.IsOpen = false;
+            tbExpensesExceed.Visibility = Visibility.Visible;
         }
     }
 }
